@@ -1,6 +1,7 @@
 const chalk = require('chalk');
 const BaseGenerator = require('generator-jhipster/generators/generator-base');
 const fs = require('fs');
+const packagejs = require('../package.json');
 
 const importAutoPlaces = [
     'import java.util.List;',
