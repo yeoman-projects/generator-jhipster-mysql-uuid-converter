@@ -1,0 +1,63 @@
+{
+  "name": "generator-jhipster-mysql-uuid-converter",
+  "version": "0.0.1",
+  "description": "mysql Long to UUID converter",
+  "keywords": [
+    "yeoman-generator",
+    "jhipster-module"
+  ],
+  "homepage": "https://github.com/omishyn/generator-jhipster-mysql-uuid-converter",
+  "author": {
+    "name": "Oleh Mishyn",
+    "email": "mishyn.uk@gmail.com",
+    "url": "https://github.com/omishyn"
+  },
+  "files": [
+    "generators"
+  ],
+  "main": "generators/app/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/omishyn/generator-jhipster-mysql-uuid-converter.git"
+  },
+  "dependencies": {
+    "chalk": "3.0.0",
+    "generator-jhipster": ">=6.0.0",
+    "glob": "7.1.6",
+    "mkdirp": "0.5.1",
+    "lodash": "4.17.15",
+    "semver": "7.1.1",
+    "shelljs": "0.8.3",
+    "underscore.string": "^3.3.4",
+    "yeoman-generator": "4.5.0",
+    "yeoman-environment": "2.7.0"
+  },
+  "devDependencies": {
+    "eslint": "6.8.0",
+    "eslint-config-airbnb-base": "14.0.0",
+    "eslint-plugin-import": "2.20.0",
+    "fs-extra": "8.1.0",
+    "gulp": "3.9.1",
+    "gulp-bump": "2.7.0",
+    "gulp-eslint": "3.0.1",
+    "gulp-exclude-gitignore": "1.1.1",
+    "gulp-git": "2.1.0",
+    "gulp-istanbul": "1.1.1",
+    "gulp-mocha": "3.0.1",
+    "gulp-nsp": "2.4.2",
+    "gulp-plumber": "1.1.0",
+    "gulp-rename": "1.2.2",
+    "gulp-sequence": "0.4.6",
+    "gulp-shell": "0.6.3",
+    "mocha": "3.2.0",
+    "yeoman-assert": "3.0.0",
+    "yeoman-test": "1.6.0"
+  },
+  "scripts": {
+    "test": "mocha test/*"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/omishyn/generator-jhipster-mysql-uuid-converter/issues"
+  }
+}
