@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "chalk": "3.0.0",
+    "yosay": "^2.0.1",
     "generator-jhipster": ">=6.0.0",
     "glob": "7.1.6",
     "mkdirp": "0.5.1",

@@ -1,5 +1,6 @@
 'use strict';
 const chalk = require('chalk');
+const yosay = require('yosay');
 const glob = require('glob');
 const packagejs = require('../../package.json');
 const BaseGenerator = require('../common');
@@ -18,6 +19,7 @@ module.exports = class extends BaseGenerator {
             readConfig() {
                 this.log(`${chalk.green.bold('Entity!')} Read Config started...\n`);
                 this.entityConfig = this.options.entityConfig;
+                this.log(`${chalk.green.bold('entityConfig:')} ${JSON.stringify(this.entityConfig)}\n`);
                 this.jhAppConfig = this.getAllJhipsterConfig();
                 if (!this.jhAppConfig) {
                     this.error('Can\'t read .yo-rc.json');
@@ -52,6 +54,7 @@ module.exports = class extends BaseGenerator {
             validate() {
                 // this shouldn't be run directly
                 if (!this.entityConfig) {
+                    this.abort = true;
                     this.env.error(`${chalk.red.bold('ERROR!')} This sub generator should be used only from JHipster and cannot be run directly...\n`);
                 }
             }
@@ -59,6 +62,8 @@ module.exports = class extends BaseGenerator {
     }
 
     prompting() {
+        this.log('prompting');
+
         if (this.abort) {
             return;
         }
@@ -70,22 +75,26 @@ module.exports = class extends BaseGenerator {
             return;
         }
         const done = this.async();
-        // const entityName = this.entityConfig.entityClass;
 
-        // const prompts = [{
-        //     type: 'confirm',
-        //     name: 'enableUUID',
-        //     message: `Do you want to enable transform for this entity(${entityName})?`,
-        //     default: true
-        // }];
+        const entityName = this.entityConfig.entityClass;
 
-        const prompts = [];
+        // Have Yeoman greet the user.
+        this.log(
+            yosay(`Welcome to the solid ${chalk.red('mysql-uuid')} converter!`)
+        );
 
-        this.prompt(prompts).then((props) => {
+        const prompts = [
+            {
+                type: 'confirm',
+                name: 'canChangeEntity',
+                message: `Would you like to enable this option for '${entityName}'?`,
+                default: true
+            }
+        ];
+
+        return this.prompt(prompts).then(props => {
+            // To access props later use this.props.canChangeEntity;
             this.props = props;
-
-            // To access props later use this.props.someOption;
-            // this.enableUUID = props.enableUUID;
 
             done();
         });
@@ -192,6 +201,9 @@ module.exports = class extends BaseGenerator {
 
             writeFiles() {
                 this.log(`${chalk.green.bold('ENTITY!')} Write files complete...\n`);
+                if (this.abort) {
+                    return;
+                }
             },
 
             updateConfig() {
