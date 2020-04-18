@@ -13,14 +13,28 @@ module.exports = class extends BaseGenerator {
     get initializing() {
         return {
             init(args) {
+                this.log(JSON.stringify(args));
                 this.log(`${chalk.green.bold('Entity!')} Init complete...\n`);
+                this.abort = false;
             },
 
             readConfig() {
                 this.log(`${chalk.green.bold('Entity!')} Read Config started...\n`);
-                this.entityConfig = this.options.entityConfig;
-                this.log(`${chalk.green.bold('entityConfig:')} ${JSON.stringify(this.entityConfig)}\n`);
+
+                // this.entityConfig = this.options.entityConfig;
+
+                // this.log(`${chalk.green.bold('options:')} ${JSON.stringify(this.options)}\n`);
+
                 this.jhAppConfig = this.getAllJhipsterConfig();
+
+                this.log(`${chalk.green.bold('options:')} ${JSON.stringify(this.jhAppConfig)}\n`);
+                try{
+                    this.log(`${chalk.green.bold('options:')} ${JSON.stringify(this.options)}\n`);
+                }catch(e){
+
+                }
+
+
                 if (!this.jhAppConfig) {
                     this.error('Can\'t read .yo-rc.json');
                 }
@@ -30,7 +44,7 @@ module.exports = class extends BaseGenerator {
             checkDBType() {
                 if (this.jhAppConfig.databaseType !== 'sql') {
                     // exit if DB type is not SQL
-                    this.abort = true;
+                    // this.abort = true;
                 }
                 this.log(`${chalk.green.bold('Entity!')} Check DB complete...\n`);
             },
@@ -43,20 +57,21 @@ module.exports = class extends BaseGenerator {
             },
 
             checkJHVersion() {
-                const jhipsterVersion = this.jhAppConfig.jhipsterVersion;
-                const minimumJhipsterVersion = packagejs.dependencies['generator-jhipster'];
-                if (!semver.satisfies(jhipsterVersion, minimumJhipsterVersion)) {
-                    this.env.error(`${chalk.red.bold('ERROR!')}  I support only JHipster versions greater than ${minimumJhipsterVersion}...
-                    If you want to use Entity Audit with an older JHipster version, download a previous version that supports the required JHipster version.`);
-                }
+                // const jhipsterVersion = this.jhAppConfig.jhipsterVersion;
+                // const minimumJhipsterVersion = packagejs.dependencies['generator-jhipster'];
+                // if (!semver.satisfies(jhipsterVersion, minimumJhipsterVersion)) {
+                //     this.env.error(`${chalk.red.bold('ERROR!')}  I support only JHipster versions greater than ${minimumJhipsterVersion}...
+                //     If you want to use Entity Audit with an older JHipster version, download a previous version that supports the required JHipster version.`);
+                // }
             },
 
             validate() {
                 // this shouldn't be run directly
-                if (!this.entityConfig) {
-                    this.abort = true;
-                    this.env.error(`${chalk.red.bold('ERROR!')} This sub generator should be used only from JHipster and cannot be run directly...\n`);
-                }
+                // this.log(JSON.stringify(this.entityConfig));
+                // if (!this.entityConfig) {
+                    // this.abort = true;
+                    // this.env.error(`${chalk.red.bold('ERROR!')} This sub generator should be used only from JHipster and cannot be run directly...\n`);
+                // }
             }
         };
     }
@@ -69,14 +84,14 @@ module.exports = class extends BaseGenerator {
         }
 
         // don't prompt if data are imported from a file
-        if (this.entityConfig.useConfigurationFile === true && this.entityConfig.data && typeof this.entityConfig.data.yourOptionKey !== 'undefined') {
-            this.yourOptionKey = this.entityConfig.data.yourOptionKey;
-            this.info('Can\'t entityConfig', this.entityConfig);
-            return;
-        }
+        // if (this.entityConfig.useConfigurationFile === true && this.entityConfig.data && typeof this.entityConfig.data.yourOptionKey !== 'undefined') {
+        //     this.yourOptionKey = this.entityConfig.data.yourOptionKey;
+        //     this.info('Can\'t entityConfig', this.entityConfig);
+        //     return;
+        // }
         const done = this.async();
 
-        const entityName = this.entityConfig.entityClass;
+        const entityName = 'XXX'; //this.entityConfig.entityClass;
 
         // Have Yeoman greet the user.
         this.log(
@@ -124,16 +139,18 @@ module.exports = class extends BaseGenerator {
                 // const resourceDir = jhipsterConstants.SERVER_MAIN_RES_DIR;
                 // const webappDir = jhipsterConstants.CLIENT_MAIN_SRC_DIR;
 
-                const entityName = this.entityConfig.entityClass;
+                const entityName = 'Application';//this.entityConfig.entityClass;
 
                 // do your stuff here
                 // check if repositories are already annotated
-                const uuidGeneratorAnnotation = '@GeneratedValue.*"UUIDGenerator"';
+                const uuidGeneratorAnnotation = '@GeneratedValue.*';
                 const pattern = new RegExp(uuidGeneratorAnnotation, 'g');
 
                 const content = this.fs.read(`${javaDir}domain/${entityName}.java`, 'utf8');
 
-                if (!pattern.test(content)) {
+                if ( true
+                    //!pattern.test(content)
+                ) {
                     // We need to convert this entity
 
                     // JAVA
@@ -210,7 +227,7 @@ module.exports = class extends BaseGenerator {
                 if (this.abort) {
                     return;
                 }
-                this.updateEntityConfig(this.entityConfig.filename, 'yourOptionKey', this.yourOptionKey);
+                // this.updateEntityConfig(this.entityConfig.filename, 'yourOptionKey', this.yourOptionKey);
 
                 this.log(`${chalk.green.bold('ENTITY!')} Update Config complete...\n`);
             }
@@ -218,12 +235,12 @@ module.exports = class extends BaseGenerator {
     }
 
     end() {
-        if (this.abort) {
-            return;
-        }
-        if (this.yourOptionKey) {
-            this.log(`\n${chalk.bold.green('mysql-uuid-converter enabled')}`);
-        }
+        // if (this.abort) {
+        //     return;
+        // }
+        // if (this.yourOptionKey) {
+        //     this.log(`\n${chalk.bold.green('mysql-uuid-converter enabled')}`);
+        // }
 
         this.log(`${chalk.green.bold('ENTITY!')} End...\n`);
     }

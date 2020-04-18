@@ -11,7 +11,7 @@ const istanbul = require('gulp-istanbul');
 const nsp = require('gulp-nsp');
 const plumber = require('gulp-plumber');
 
-gulp.task('eslint', () => gulp.src(['gulpfile.js', 'generators/app/index.js', 'test/*.js'])
+gulp.task('eslint', () => gulp.src(['gulpfile.js', 'generators/app/_index.js', 'test/*.js'])
     // .pipe(plumber({errorHandler: handleErrors}))
     .pipe(eslint())
     .pipe(eslint.format())
@@ -22,7 +22,7 @@ gulp.task('nsp', (cb) => {
     nsp({ package: path.resolve('package.json') }, cb);
 });
 
-gulp.task('pre-test', () => gulp.src('generators/app/index.js')
+gulp.task('pre-test', () => gulp.src('generators/app/_index.js')
     .pipe(istanbul({
         includeUntested: true
     }))
