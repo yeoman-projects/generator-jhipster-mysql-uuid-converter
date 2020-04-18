@@ -6,6 +6,7 @@ const BaseGenerator = require('../common');
 const jhipsterConstants = require('generator-jhipster/generators/generator-constants');
 const _s = require('underscore.string');
 const fs = require('fs');
+const semver = require('semver');
 
 module.exports = class extends BaseGenerator {
     get initializing() {
