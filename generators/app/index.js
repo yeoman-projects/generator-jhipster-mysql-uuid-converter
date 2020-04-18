@@ -215,7 +215,11 @@ module.exports = class extends BaseGenerator {
             registering() {
                 // Register this generator as a dev dependency
                 // this.addNpmDevDependency('generator-jhipster-mysql-uuid-converter', packagejs.version);
+
+                this.addNpmDependency('semver', '^7.0.0');
+
                 // this.addNpmDevDependency('generator-jhipster-mysql-uuid-converter', packagejs.repository.url.replace('git+',''));
+
                 // Register post-app and post-entity hook
                 try {
                     // this.registerModule('generator-jhipster-mysql-uuid-converter', 'app', 'post', 'app', 'mysql Long to UUID converter');
