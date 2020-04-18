@@ -1,3 +1,4 @@
+'use strict';
 const chalk = require('chalk');
 const glob = require('glob');
 const packagejs = require('../../package.json');
@@ -14,6 +15,7 @@ module.exports = class extends BaseGenerator {
             },
 
             readConfig() {
+                this.log(`${chalk.green.bold('Entity!')} Read Config started...\n`);
                 this.entityConfig = this.options.entityConfig;
                 this.jhAppConfig = this.getAllJhipsterConfig();
                 if (!this.jhAppConfig) {

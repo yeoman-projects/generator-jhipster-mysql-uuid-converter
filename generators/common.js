@@ -1,3 +1,4 @@
+'use strict';
 const chalk = require('chalk');
 const BaseGenerator = require('generator-jhipster/generators/generator-base');
 const fs = require('fs');

@@ -1,3 +1,4 @@
+'use strict';
 const chalk = require('chalk');
 const glob = require('glob');
 
@@ -214,7 +215,7 @@ module.exports = class extends BaseGenerator {
             registering() {
                 // Register this generator as a dev dependency
                 // this.addNpmDevDependency('generator-jhipster-mysql-uuid-converter', packagejs.version);
-                this.addNpmDevDependency('generator-jhipster-mysql-uuid-converter', packagejs.repository.url.replace('git+',''));
+                // this.addNpmDevDependency('generator-jhipster-mysql-uuid-converter', packagejs.repository.url.replace('git+',''));
                 // Register post-app and post-entity hook
                 try {
                     // this.registerModule('generator-jhipster-mysql-uuid-converter', 'app', 'post', 'app', 'mysql Long to UUID converter');
