@@ -12,6 +12,10 @@ const fs = require("fs");
 const filePath = ".yo-rc.json";
 const generator_jh = "generator-jhipster";
 const otherModulesName = "otherModules";
+const pn = {
+    name: packagejs.name,
+    version: packagejs.version
+};
 
 const BaseGenerator = require("../common");
 
@@ -19,14 +23,55 @@ module.exports = class extends BaseGenerator {
     get initializing() {
         return {
             init(args) {
-                if (args === "default") {
-                }
                 this.registerPrettierTransform();
+                this.abort = false;
+                this.log();
+                this.log(
+                    `${chalk.blue.bold("args = ")} ${JSON.stringify(args)}\n`
+                );
 
-                this.log(`${chalk.blue.bold("App!")} Init complete...\n`);
+                const data = fs.existsSync(filePath)
+                    ? fs.readFileSync(filePath, { flag: "r" })
+                    : null;
+
+                if (data) {
+                    const json = JSON.parse(data);
+                    const jh = json[generator_jh];
+                    this.log(
+                        `${chalk.blue.bold(
+                            "App generator_jh: "
+                        )} ${JSON.stringify(jh)}\n`
+                    );
+                    const otherModules = jh[otherModulesName] || [];
+                    const oldPn = otherModules.find(e => e.name === pn.name);
+                    if (oldPn) {
+                        oldPn.version = pn.version;
+                        this.abort = true;
+                        this.error("Converter already installed!");
+                    } else {
+                        otherModules.push(pn);
+                    }
+
+                    this.log(
+                        `${chalk.blue.bold("otherModules: ")} ${JSON.stringify(
+                            otherModules
+                        )}\n`
+                    );
+                    json[generator_jh][otherModulesName] = otherModules;
+                    fs.unlinkSync(filePath);
+                    fs.writeFileSync(filePath, JSON.stringify(json, null, 2), {
+                        encoding: "utf8",
+                        flag: "w+"
+                    });
+                }
+
+                this.log(`${chalk.blue.bold("Entity!")} Init complete...\n`);
             },
 
             readConfig() {
+                if (this.abort) {
+                    return;
+                }
                 this.jhAppConfig = this.getAllJhipsterConfig();
 
                 if (!this.jhAppConfig) {
@@ -39,6 +84,9 @@ module.exports = class extends BaseGenerator {
             },
 
             checkDBType() {
+                if (this.abort) {
+                    return;
+                }
                 if (this.jhAppConfig.databaseType !== "sql") {
                     // exit if DB type is not SQL
                     this.abort = true;
@@ -51,6 +99,9 @@ module.exports = class extends BaseGenerator {
             },
 
             checkJHVersion() {
+                if (this.abort) {
+                    return;
+                }
                 const jhipsterVersion = this.jhAppConfig.jhipsterVersion;
                 const minimumJhipsterVersion =
                     packagejs.dependencies["generator-jhipster"];
@@ -70,6 +121,9 @@ module.exports = class extends BaseGenerator {
     }
 
     prompting() {
+        if (this.abort) {
+            return;
+        }
         const prompts = [];
         const done = this.async();
         this.prompt(prompts).then(props => {
@@ -83,52 +137,16 @@ module.exports = class extends BaseGenerator {
     get writing() {
         return {
             updateYeomanConfig() {
-                const pn = {
-                    name: packagejs.name,
-                    version: packagejs.version
-                };
-
-                // this.config.set('promptValues', pn);
-
-                const data = fs.existsSync(filePath)
-                    ? fs.readFileSync(filePath, { flag: "r" })
-                    : null;
-                if (data) {
-                    const json = JSON.parse(data);
-                    const jh = json[generator_jh];
-                    this.log(
-                        `${chalk.blue.bold(
-                            "App generator_jh: "
-                        )} ${JSON.stringify(jh)}\n`
-                    );
-                    const otherModules = jh[otherModulesName] || [];
-                    const oldPn = otherModules.find(e => e.name === pn.name);
-                    if (oldPn) {
-                        oldPn.version = pn.version;
-                    } else {
-                        otherModules.push(pn);
-                    }
-
-                    this.log(
-                        `${chalk.blue.bold("otherModules: ")} ${JSON.stringify(
-                            otherModules
-                        )}\n`
-                    );
-                    json[generator_jh][otherModulesName] = otherModules;
-                    fs.unlinkSync(filePath);
-                    fs.writeFileSync(filePath, JSON.stringify(json, null, 2), {
-                        encoding: "utf8",
-                        flag: "w+"
-                    });
+                if (this.abort) {
+                    return;
                 }
-                this.log(
-                    `${chalk.blue.bold(
-                        "App!"
-                    )} Update Yeoman Config complete...\n`
-                );
+                // this.config.set('promptValues', pn);
             },
 
             setupGlobalVar() {
+                if (this.abort) {
+                    return;
+                }
                 // read config from .yo-rc.json
                 this.baseName = this.jhAppConfig.baseName;
                 this.packageName = this.jhAppConfig.packageName;
@@ -174,6 +192,9 @@ module.exports = class extends BaseGenerator {
             },
 
             writeBaseFiles() {
+                if (this.abort) {
+                    return;
+                }
                 const javaDir = this.javaDir;
                 const javaTestDir = this.javaTestDir;
                 const webappDir = this.webappDir;
@@ -389,6 +410,9 @@ module.exports = class extends BaseGenerator {
             },
 
             registering() {
+                if (this.abort) {
+                    return;
+                }
                 // Register this generator as a dev dependency
                 // this.addNpmDevDependency('generator-jhipster-mysql-uuid-converter', packagejs.version);
 
@@ -418,6 +442,10 @@ module.exports = class extends BaseGenerator {
     }
 
     install() {
+        if (this.abort) {
+            return;
+        }
+
         const logMsg = `To install your dependencies manually, run: ${chalk.yellow.bold(
             `${this.clientPackageManager} install`
         )}`;
