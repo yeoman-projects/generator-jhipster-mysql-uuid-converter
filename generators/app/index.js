@@ -92,7 +92,7 @@ module.exports = class extends BaseGenerator {
                     this.log(`${chalk.green.bold('App generator_jh: ')} ${JSON.stringify(jh)}\n`);
                     const otherModules = jh[otherModulesName] || [];
                     const oldPn = otherModules.find(e => e.name === pn.name);
-                    if(!oldPn) {
+                    if(oldPn) {
                         oldPn.version = pn.version;
                     } else {
                         otherModules.push(pn);
