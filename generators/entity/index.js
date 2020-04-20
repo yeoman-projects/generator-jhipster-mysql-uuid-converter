@@ -1,6 +1,6 @@
 'use strict';
 const chalk = require('chalk');
-const yosay = require('yosay');
+// const yosay = require('yosay');
 const glob = require('glob');
 const packagejs = require('../../package.json');
 const BaseGenerator = require('../common');
