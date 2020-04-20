@@ -1,14 +1,14 @@
-const chalk = require("chalk");
+const chalk = require('chalk');
 // const yosay = require('yosay');
-const glob = require("glob");
-const jhipsterConstants = require("generator-jhipster/generators/generator-constants");
-const _s = require("underscore.string");
-const fs = require("fs");
-const semver = require("semver");
-const BaseGenerator = require("../common");
-const packagejs = require("../../package.json");
+const glob = require('glob');
+const jhipsterConstants = require('generator-jhipster/generators/generator-constants');
+const _s = require('underscore.string');
+const fs = require('fs');
+const semver = require('semver');
+const BaseGenerator = require('../common');
+const packagejs = require('../../package.json');
 
-const canChangeEntity = "canChangeEntity";
+const canChangeEntity = 'canChangeEntity';
 
 module.exports = class extends BaseGenerator {
     get initializing() {
@@ -17,13 +17,13 @@ module.exports = class extends BaseGenerator {
                 this.abort = false;
                 this.log();
                 this.log(
-                    `${chalk.blue.bold("args = ")} ${JSON.stringify(args)}\n`
+                    `${chalk.blue.bold('args = ')} ${JSON.stringify(args)}\n`
                 );
-                this.log(`${chalk.blue.bold("Entity!")} Init complete...\n`);
+                this.log(`${chalk.blue.bold('Entity!')} Init complete...\n`);
             },
 
             readConfig() {
-                this.log(`${chalk.blue.bold("Entity!")} Config start...\n`);
+                this.log(`${chalk.blue.bold('Entity!')} Config start...\n`);
 
                 this.entityConfig = this.options.entityConfig;
 
@@ -32,7 +32,7 @@ module.exports = class extends BaseGenerator {
                 this.jhAppConfig = this.getAllJhipsterConfig();
 
                 this.log(
-                    `${chalk.blue.bold("jhAppConfig:")} ${JSON.stringify(
+                    `${chalk.blue.bold('jhAppConfig:')} ${JSON.stringify(
                         this.jhAppConfig
                     )}\n`
                 );
@@ -41,21 +41,21 @@ module.exports = class extends BaseGenerator {
                     this.error("Can't read .yo-rc.json");
                 }
 
-                this.log(`${chalk.blue.bold("Entity!")} Config complete...\n`);
+                this.log(`${chalk.blue.bold('Entity!')} Config complete...\n`);
             },
 
             checkDBType() {
-                if (this.jhAppConfig.databaseType !== "sql") {
+                if (this.jhAppConfig.databaseType !== 'sql') {
                     // exit if DB type is not SQL
                     this.abort = true;
                     this.env.error(
                         `${chalk.red.bold(
-                            "ERROR!"
+                            'ERROR!'
                         )}  I support only Sql database...`
                     );
                 } else {
                     this.log(
-                        `${chalk.blue.bold("Entity!")} Check DB complete...\n`
+                        `${chalk.blue.bold('Entity!')} Check DB complete...\n`
                     );
                 }
             },
@@ -67,12 +67,12 @@ module.exports = class extends BaseGenerator {
             checkJHVersion() {
                 const { jhipsterVersion } = this.jhAppConfig;
                 const minimumJhipsterVersion =
-                    packagejs.dependencies["generator-jhipster"];
+                    packagejs.dependencies['generator-jhipster'];
                 if (
                     !semver.satisfies(jhipsterVersion, minimumJhipsterVersion)
                 ) {
                     this.env.error(`${chalk.red.bold(
-                        "ERROR!"
+                        'ERROR!'
                     )}  I support only JHipster versions greater than ${minimumJhipsterVersion}...
                     If you want to use Entity Audit with an older JHipster version, download a previous version that supports the required JHipster version.`);
                 }
@@ -84,7 +84,7 @@ module.exports = class extends BaseGenerator {
                     this.abort = true;
                     this.env.error(
                         `${chalk.red.bold(
-                            "ERROR!"
+                            'ERROR!'
                         )} This sub generator should be used only from JHipster and cannot be run directly...\n`
                     );
                 }
@@ -97,7 +97,7 @@ module.exports = class extends BaseGenerator {
         if (
             this.entityConfig.useConfigurationFile === true &&
             this.entityConfig.data &&
-            typeof this.entityConfig.data.yourOptionKey !== "undefined"
+            typeof this.entityConfig.data.yourOptionKey !== 'undefined'
         ) {
             this.yourOptionKey = this.entityConfig.data.yourOptionKey;
             return;
@@ -108,7 +108,7 @@ module.exports = class extends BaseGenerator {
         const done = this.async();
         const prompts = [
             {
-                type: "confirm",
+                type: 'confirm',
                 name: canChangeEntity,
                 message: `Would you like to change the ${entityName} entity class?`,
                 default: true
@@ -156,11 +156,11 @@ module.exports = class extends BaseGenerator {
                 // check if repositories are already annotated
                 const uuidGeneratorAnnotation =
                     '@GeneratedValue.*"UUIDGenerator"';
-                const pattern = new RegExp(uuidGeneratorAnnotation, "g");
+                const pattern = new RegExp(uuidGeneratorAnnotation, 'g');
 
                 const content = this.fs.read(
                     `${javaDir}domain/${entityName}.java`,
-                    "utf8"
+                    'utf8'
                 );
 
                 if (!pattern.test(content)) {
@@ -169,8 +169,8 @@ module.exports = class extends BaseGenerator {
                     // JAVA
                     this.convertIDtoUUIDForColumn(
                         `${javaDir}domain/${entityName}.java`,
-                        "",
-                        "id"
+                        '',
+                        'id'
                     );
 
                     // DTO
@@ -247,9 +247,9 @@ module.exports = class extends BaseGenerator {
                     )[0];
                     this.replaceContent(
                         stateFile,
-                        "{id:int}",
-                        "{id:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}}",
-                        "true"
+                        '{id:int}',
+                        '{id:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}}',
+                        'true'
                     );
 
                     // Liquidbase
@@ -261,67 +261,67 @@ module.exports = class extends BaseGenerator {
                         file,
                         'type="bigint"',
                         'type="varchar(50)"',
-                        "true"
+                        'true'
                     );
                     this.replaceContent(
                         file,
                         'type="BIGINT"',
                         'type="varchar(50)"',
-                        "true"
+                        'true'
                     );
                     this.replaceContent(
                         file,
                         'type="numeric"',
                         'type="string"',
-                        "true"
+                        'true'
                     );
                     this.replaceContent(
                         file,
                         'autoIncrement="\\$\\{autoIncrement\\}"',
-                        "",
-                        "true"
+                        '',
+                        'true'
                     );
 
                     // Test
                     // Handle the question of life check
                     this.replaceContent(
                         `${javaTestDir}/web/rest/${entityName}ResourceIT.java`,
-                        "(42L|42)",
+                        '(42L|42)',
                         'UUID.fromString("00000000-0000-0000-0000-000000000042")',
-                        "true"
+                        'true'
                     );
                     this.longToUUID(
                         `${javaTestDir}/web/rest/${entityName}ResourceIT.java`
                     );
                     this.replaceContent(
                         `${javaTestDir}/web/rest/${entityName}ResourceIT.java`,
-                        "1L",
+                        '1L',
                         'UUID.fromString("00000000-0000-0000-0000-000000000001")',
-                        "true"
+                        'true'
                     );
                     this.replaceContent(
                         `${javaTestDir}/web/rest/${entityName}ResourceIT.java`,
-                        "2L",
+                        '2L',
                         'UUID.fromString("00000000-0000-0000-0000-000000000002")',
-                        "true"
+                        'true'
                     );
                     this.replaceContent(
                         `${javaTestDir}/web/rest/${entityName}ResourceIT.java`,
-                        "getId\\(\\)\\.intValue\\(\\)",
-                        "getId().toString()",
-                        "true"
+                        'getId\\(\\)\\.intValue\\(\\)',
+                        'getId().toString()',
+                        'true'
                     );
                     this.replaceContent(
                         `${javaTestDir}/web/rest/${entityName}ResourceIT.java`,
-                        "\\.intValue\\(\\)",
-                        ".toString()",
-                        "true"
+                        '\\.intValue\\(\\)',
+                        '.toString()',
+                        'true'
                     );
                     this.replaceContent(
                         `${javaTestDir}/web/rest/${entityName}ResourceIT.java`,
-                        "MAX_VALUE",
-                        "randomUUID()",
-                        "true"
+                        'MAX_VALUE',
+                        'randomUUID()',
+                        'true'
                     );
 
                     // domain Test
@@ -330,37 +330,37 @@ module.exports = class extends BaseGenerator {
                     );
                     this.replaceContent(
                         `${javaTestDir}domain/${entityName}Test.java`,
-                        "1L",
+                        '1L',
                         'UUID.fromString("00000000-0000-0000-0000-000000000001")',
-                        "true"
+                        'true'
                     );
                     this.replaceContent(
                         `${javaTestDir}domain/${entityName}Test.java`,
-                        "2L",
+                        '2L',
                         'UUID.fromString("00000000-0000-0000-0000-000000000002")',
-                        "true"
+                        'true'
                     );
 
-                    const delimiter = "XXXXXXXXXX";
+                    const delimiter = 'XXXXXXXXXX';
                     for (let i = 1; i <= 10; i++) {
                         this.replaceContent(
                             `src/main/resources/config/liquibase/fake-data/${entityName.toLowerCase()}.csv`,
                             `${i};`,
                             `${this.uuid()}${delimiter}`,
-                            "true"
+                            'true'
                         );
                     }
 
                     this.replaceContent(
                         `src/main/resources/config/liquibase/fake-data/${entityName.toLowerCase()}.csv`,
                         `${delimiter}`,
-                        ";",
-                        "true"
+                        ';',
+                        'true'
                     );
                 }
 
                 this.log(
-                    `${chalk.blue.bold("ENTITY!")} Update files complete...\n`
+                    `${chalk.blue.bold('ENTITY!')} Update files complete...\n`
                 );
             },
 
@@ -369,7 +369,7 @@ module.exports = class extends BaseGenerator {
                     return;
                 }
                 this.log(
-                    `${chalk.blue.bold("ENTITY!")} Write files complete...\n`
+                    `${chalk.blue.bold('ENTITY!')} Write files complete...\n`
                 );
             },
 
@@ -379,17 +379,17 @@ module.exports = class extends BaseGenerator {
                 }
                 this.updateEntityConfig(
                     this.entityConfig.filename,
-                    "yourOptionKey",
+                    'yourOptionKey',
                     this.yourOptionKey
                 );
                 this.log(
-                    `${chalk.red.bold("yourOptionKey: ")}${JSON.stringify(
+                    `${chalk.red.bold('yourOptionKey: ')}${JSON.stringify(
                         this.yourOptionKey
                     )}`
                 );
 
                 this.log(
-                    `${chalk.blue.bold("ENTITY!")} Update Config complete...\n`
+                    `${chalk.blue.bold('ENTITY!')} Update Config complete...\n`
                 );
             }
         };
@@ -400,9 +400,9 @@ module.exports = class extends BaseGenerator {
             return;
         }
         if (this.yourOptionKey) {
-            this.log(`\n${chalk.bold.blue("mysql-uuid-converter enabled")}`);
+            this.log(`\n${chalk.bold.blue('mysql-uuid-converter enabled')}`);
         }
 
-        this.log(`${chalk.blue.bold("ENTITY!")} End...\n`);
+        this.log(`${chalk.blue.bold('ENTITY!')} End...\n`);
     }
 };

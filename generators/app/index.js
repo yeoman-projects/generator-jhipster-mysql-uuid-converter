@@ -1,23 +1,23 @@
-const chalk = require("chalk");
-const glob = require("glob");
+const chalk = require('chalk');
+const glob = require('glob');
 
-const semver = require("semver");
+const semver = require('semver');
 
-const jhipsterConstants = require("generator-jhipster/generators/generator-constants");
-const _ = require("lodash");
+const jhipsterConstants = require('generator-jhipster/generators/generator-constants');
+const _ = require('lodash');
 
-const fs = require("fs");
-const packagejs = require("../../package.json");
+const fs = require('fs');
+const packagejs = require('../../package.json');
 
-const filePath = ".yo-rc.json";
-const generatorJh = "generator-jhipster";
-const otherModulesName = "otherModules";
+const filePath = '.yo-rc.json';
+const generatorJh = 'generator-jhipster';
+const otherModulesName = 'otherModules';
 const pn = {
     name: packagejs.name,
     version: packagejs.version
 };
 
-const BaseGenerator = require("../common");
+const BaseGenerator = require('../common');
 
 module.exports = class extends BaseGenerator {
     get initializing() {
@@ -27,11 +27,11 @@ module.exports = class extends BaseGenerator {
                 this.abort = false;
                 this.log();
                 this.log(
-                    `${chalk.blue.bold("args = ")} ${JSON.stringify(args)}\n`
+                    `${chalk.blue.bold('args = ')} ${JSON.stringify(args)}\n`
                 );
 
                 const data = fs.existsSync(filePath)
-                    ? fs.readFileSync(filePath, { flag: "r" })
+                    ? fs.readFileSync(filePath, { flag: 'r' })
                     : null;
 
                 if (data) {
@@ -39,7 +39,7 @@ module.exports = class extends BaseGenerator {
                     const jh = json[generatorJh];
                     this.log(
                         `${chalk.blue.bold(
-                            "App generator_jh: "
+                            'App generator_jh: '
                         )} ${JSON.stringify(jh)}\n`
                     );
                     const otherModules = jh[otherModulesName] || [];
@@ -47,25 +47,25 @@ module.exports = class extends BaseGenerator {
                     if (oldPn) {
                         oldPn.version = pn.version;
                         this.abort = true;
-                        this.error("Converter already installed!");
+                        this.error('Converter already installed!');
                     } else {
                         otherModules.push(pn);
                     }
 
                     this.log(
-                        `${chalk.blue.bold("otherModules: ")} ${JSON.stringify(
+                        `${chalk.blue.bold('otherModules: ')} ${JSON.stringify(
                             otherModules
                         )}\n`
                     );
                     json[generatorJh][otherModulesName] = otherModules;
                     fs.unlinkSync(filePath);
                     fs.writeFileSync(filePath, JSON.stringify(json, null, 2), {
-                        encoding: "utf8",
-                        flag: "w+"
+                        encoding: 'utf8',
+                        flag: 'w+'
                     });
                 }
 
-                this.log(`${chalk.blue.bold("Entity!")} Init complete...\n`);
+                this.log(`${chalk.blue.bold('Entity!')} Init complete...\n`);
             },
 
             readConfig() {
@@ -79,7 +79,7 @@ module.exports = class extends BaseGenerator {
                 }
 
                 this.log(
-                    `${chalk.blue.bold("App!")} Read Config complete...\n`
+                    `${chalk.blue.bold('App!')} Read Config complete...\n`
                 );
             },
 
@@ -87,11 +87,11 @@ module.exports = class extends BaseGenerator {
                 if (this.abort) {
                     return;
                 }
-                if (this.jhAppConfig.databaseType !== "sql") {
+                if (this.jhAppConfig.databaseType !== 'sql') {
                     // exit if DB type is not SQL
                     this.abort = true;
                 }
-                this.log(`${chalk.blue.bold("App!")} Check DB complete...\n`);
+                this.log(`${chalk.blue.bold('App!')} Check DB complete...\n`);
             },
 
             displayLogo() {
@@ -104,7 +104,7 @@ module.exports = class extends BaseGenerator {
                 }
                 const { jhipsterVersion } = this.jhAppConfig;
                 const minimumJhipsterVersion =
-                    packagejs.dependencies["generator-jhipster"];
+                    packagejs.dependencies['generator-jhipster'];
                 if (
                     !semver.satisfies(jhipsterVersion, minimumJhipsterVersion)
                 ) {
@@ -114,7 +114,7 @@ module.exports = class extends BaseGenerator {
                 }
 
                 this.log(
-                    `${chalk.blue.bold("App!")} Check JH Version complete...\n`
+                    `${chalk.blue.bold('App!')} Check JH Version complete...\n`
                 );
             }
         };
@@ -175,7 +175,7 @@ module.exports = class extends BaseGenerator {
 
                 // use constants from generator-constants.js
                 this.webappDir = jhipsterConstants.CLIENT_MAIN_SRC_DIR;
-                this.javaTemplateDir = "src/main/java/package";
+                this.javaTemplateDir = 'src/main/java/package';
                 this.javaDir = `${jhipsterConstants.SERVER_MAIN_SRC_DIR +
                     this.packageFolder}/`;
                 this.resourceDir = jhipsterConstants.SERVER_MAIN_RES_DIR;
@@ -187,7 +187,7 @@ module.exports = class extends BaseGenerator {
                 this.message = this.props.message;
 
                 this.log(
-                    `${chalk.blue.bold("App!")} Setup Global Var complete...\n`
+                    `${chalk.blue.bold('App!')} Setup Global Var complete...\n`
                 );
             },
 
@@ -201,35 +201,35 @@ module.exports = class extends BaseGenerator {
                 const { resourceDir } = this;
 
                 // show all variables
-                this.log("\n--- some config read from config ---");
+                this.log('\n--- some config read from config ---');
                 this.log(`baseName=${this.baseName}`);
                 this.log(`packageName=${this.packageName}`);
                 this.log(`clientFramework=${this.clientFramework}`);
                 this.log(`clientPackageManager=${this.clientPackageManager}`);
                 this.log(`buildTool=${this.buildTool}`);
 
-                this.log("\n--- some function ---");
+                this.log('\n--- some function ---');
                 this.log(`angularAppName=${this.angularAppName}`);
 
-                this.log("\n--- some const ---");
+                this.log('\n--- some const ---');
                 this.log(`javaDir=${javaDir}`);
                 this.log(`resourceDir=${resourceDir}`);
                 this.log(`webappDir=${webappDir}`);
 
-                this.log("\n--- variables from questions ---");
+                this.log('\n--- variables from questions ---');
                 this.log(`\nmessage=${this.message}`);
-                this.log("------\n");
+                this.log('------\n');
 
                 // Convert Code here
                 this.convertIDtoUUIDForColumn(
                     `${javaDir}domain/User.java`,
-                    "",
-                    "id"
+                    '',
+                    'id'
                 );
                 this.convertIDtoUUIDForColumn(
                     `${javaDir}domain/PersistentAuditEvent.java`,
-                    "",
-                    "event_id"
+                    '',
+                    'event_id'
                 );
 
                 // And the Repository
@@ -242,14 +242,14 @@ module.exports = class extends BaseGenerator {
                 this.longToUUID(`${javaDir}service/AuditEventService.java`);
                 this.replaceContent(
                     `${javaDir}service/UserService.java`,
-                    "getUserWithAuthorities(Long id)",
-                    "getUserWithAuthorities(UUID id)"
+                    'getUserWithAuthorities(Long id)',
+                    'getUserWithAuthorities(UUID id)'
                 );
                 this.importUUID(`${javaDir}service/mapper/UserMapper.java`);
                 this.replaceContent(
                     `${javaDir}service/mapper/UserMapper.java`,
-                    "userFromId(Long id)",
-                    "userFromId(UUID id)"
+                    'userFromId(Long id)',
+                    'userFromId(UUID id)'
                 );
                 this.longToUUID(`${javaDir}service/mapper/UserMapper.java`);
                 this.longToUUID(`${javaDir}service/UserService.java`);
@@ -258,8 +258,8 @@ module.exports = class extends BaseGenerator {
                 this.importUUID(`${javaDir}web/rest/AuditResource.java`);
                 this.replaceContent(
                     `${javaDir}web/rest/AuditResource.java`,
-                    "get(@PathVariable Long id)",
-                    "get(@PathVariable UUID id)"
+                    'get(@PathVariable Long id)',
+                    'get(@PathVariable UUID id)'
                 );
                 this.longToUUID(`${javaDir}web/rest/vm/ManagedUserVM.java`);
                 this.longToUUID(`${javaDir}service/dto/UserDTO.java`);
@@ -267,36 +267,36 @@ module.exports = class extends BaseGenerator {
                 // Tests
                 this.replaceContent(
                     `${javaTestDir}web/rest/UserResourceIT.java`,
-                    "Long",
-                    "UUID",
-                    "true"
+                    'Long',
+                    'UUID',
+                    'true'
                 );
 
                 this.replaceContent(
                     `${javaTestDir}web/rest/UserResourceIT.java`,
-                    "1L",
+                    '1L',
                     'UUID.fromString("00000000-0000-0000-0000-000000000001")',
-                    "true"
+                    'true'
                 );
                 this.replaceContent(
                     `${javaTestDir}web/rest/UserResourceIT.java`,
-                    "2L",
+                    '2L',
                     'UUID.fromString("00000000-0000-0000-0000-000000000002")',
-                    "true"
+                    'true'
                 );
 
                 this.importUUID(`${javaTestDir}web/rest/AuditResourceIT.java`);
                 this.replaceContent(
                     `${javaTestDir}web/rest/AuditResourceIT.java`,
-                    "1L",
+                    '1L',
                     'UUID.fromString("00000000-0000-0000-0000-000000000001")',
-                    "true"
+                    'true'
                 );
                 this.replaceContent(
                     `${javaTestDir}web/rest/AuditResourceIT.java`,
-                    "2L",
+                    '2L',
                     'UUID.fromString("00000000-0000-0000-0000-000000000002")',
-                    "true"
+                    'true'
                 );
 
                 this.longToUUID(
@@ -304,107 +304,107 @@ module.exports = class extends BaseGenerator {
                 );
                 this.replaceContent(
                     `${javaTestDir}service/mapper/UserMapperTest.java`,
-                    "1L",
+                    '1L',
                     'UUID.fromString("00000000-0000-0000-0000-000000000001")',
-                    "true"
+                    'true'
                 );
 
                 const file = glob.sync(
-                    "src/main/resources/config/liquibase/changelog/*initial_schema.xml"
+                    'src/main/resources/config/liquibase/changelog/*initial_schema.xml'
                 )[0];
 
                 this.replaceContent(
                     file,
                     'type="bigint"',
                     'type="varchar(50)"',
-                    "true"
+                    'true'
                 );
                 this.replaceContent(
                     file,
                     'type="BIGINT"',
                     'type="varchar(50)"',
-                    "true"
+                    'true'
                 );
                 this.replaceContent(
                     file,
                     'type="numeric"',
                     'type="string"',
-                    "true"
+                    'true'
                 );
                 this.replaceContent(
                     file,
                     'autoIncrement="\\$\\{autoIncrement\\}"',
-                    "",
-                    "true"
+                    '',
+                    'true'
                 );
 
                 this.replaceContent(
-                    "src/main/resources/config/liquibase/data/user.csv",
-                    "1;",
-                    "8d9b707a-ddf4-11e5-b86d-9a79f06e9478;",
-                    "true"
+                    'src/main/resources/config/liquibase/data/user.csv',
+                    '1;',
+                    '8d9b707a-ddf4-11e5-b86d-9a79f06e9478;',
+                    'true'
                 );
                 this.replaceContent(
-                    "src/main/resources/config/liquibase/data/user.csv",
-                    "2;",
-                    "8d9b7412-ddf4-11e5-b86d-9a79f06e9478;",
-                    "true"
+                    'src/main/resources/config/liquibase/data/user.csv',
+                    '2;',
+                    '8d9b7412-ddf4-11e5-b86d-9a79f06e9478;',
+                    'true'
                 );
                 this.replaceContent(
-                    "src/main/resources/config/liquibase/data/user.csv",
-                    "3;",
-                    "8d9b77f0-ddf4-11e5-b86d-9a79f06e9478;",
-                    "true"
+                    'src/main/resources/config/liquibase/data/user.csv',
+                    '3;',
+                    '8d9b77f0-ddf4-11e5-b86d-9a79f06e9478;',
+                    'true'
                 );
                 this.replaceContent(
-                    "src/main/resources/config/liquibase/data/user.csv",
-                    "4;",
-                    "8d9b79c6-ddf4-11e5-b86d-9a79f06e9478;",
-                    "true"
+                    'src/main/resources/config/liquibase/data/user.csv',
+                    '4;',
+                    '8d9b79c6-ddf4-11e5-b86d-9a79f06e9478;',
+                    'true'
                 );
 
                 this.replaceContent(
-                    "src/main/resources/config/liquibase/data/user_authority.csv",
-                    "1;",
-                    "8d9b707a-ddf4-11e5-b86d-9a79f06e9478;",
-                    "true"
+                    'src/main/resources/config/liquibase/data/user_authority.csv',
+                    '1;',
+                    '8d9b707a-ddf4-11e5-b86d-9a79f06e9478;',
+                    'true'
                 );
                 this.replaceContent(
-                    "src/main/resources/config/liquibase/data/user_authority.csv",
-                    "3;",
-                    "8d9b77f0-ddf4-11e5-b86d-9a79f06e9478;",
-                    "true"
+                    'src/main/resources/config/liquibase/data/user_authority.csv',
+                    '3;',
+                    '8d9b77f0-ddf4-11e5-b86d-9a79f06e9478;',
+                    'true'
                 );
                 this.replaceContent(
-                    "src/main/resources/config/liquibase/data/user_authority.csv",
-                    "4;",
-                    "8d9b79c6-ddf4-11e5-b86d-9a79f06e9478;",
-                    "true"
+                    'src/main/resources/config/liquibase/data/user_authority.csv',
+                    '4;',
+                    '8d9b79c6-ddf4-11e5-b86d-9a79f06e9478;',
+                    'true'
                 );
 
                 this.log(
                     `${chalk.blue.bold(
-                        "App!"
+                        'App!'
                     )} Update of core files complete...\n`
                 );
             },
 
             updateFiles() {
                 this.log(
-                    `${chalk.blue.bold("App!")} Update files complete...\n`
+                    `${chalk.blue.bold('App!')} Update files complete...\n`
                 );
             },
 
             writeFiles() {
                 this.log(
-                    `${chalk.blue.bold("App!")} Write files complete...\n`
+                    `${chalk.blue.bold('App!')} Write files complete...\n`
                 );
             },
 
             updateEntityFiles() {
                 this.log(
                     `${chalk.blue.bold(
-                        "App!"
+                        'App!'
                     )} Update Entity files complete...\n`
                 );
             },
@@ -421,19 +421,19 @@ module.exports = class extends BaseGenerator {
                 // Register post-app and post-entity hook
                 try {
                     this.registerModule(
-                        "generator-jhipster-mysql-uuid-converter",
-                        "entity",
-                        "post",
-                        "entity",
-                        "mysql Long to UUID converter"
+                        'generator-jhipster-mysql-uuid-converter',
+                        'entity',
+                        'post',
+                        'entity',
+                        'mysql Long to UUID converter'
                     );
                     this.log(
-                        `${chalk.blue.bold("App!")} Registering complete...\n`
+                        `${chalk.blue.bold('App!')} Registering complete...\n`
                     );
                 } catch (err) {
                     this.log(
                         `${chalk.red.bold(
-                            "WARN!"
+                            'WARN!'
                         )} Could not register as a jhipster post app and entity creation hook......\n`
                     );
                 }
@@ -466,18 +466,18 @@ module.exports = class extends BaseGenerator {
         //     callback: injectDependenciesAndConstants
         // };
 
-        if (this.options["skip-install"]) {
+        if (this.options['skip-install']) {
             this.log(logMsg);
         } else {
             // this.installDependencies(installConfig);
         }
 
-        this.log(`\n${chalk.bold.blue("App Install complete...")}`);
+        this.log(`\n${chalk.bold.blue('App Install complete...')}`);
     }
 
     end() {
         this.log(
-            `\n${chalk.bold.blue("End of mysql-uuid-converter generator")}`
+            `\n${chalk.bold.blue('End of mysql-uuid-converter generator')}`
         );
     }
 };
