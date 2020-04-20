@@ -13,8 +13,7 @@
     "url": "https://github.com/omishyn"
   },
   "files": [
-    "generators",
-    "jhipster-mysql-uuid-converter"
+    "generators"
   ],
   "main": "generators/app/index.js",
   "repository": {
@@ -65,7 +64,7 @@
   "scripts": {
     "test": "mocha test/*"
   },
-  "license": "UNLICENSED",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/omishyn/generator-jhipster-mysql-uuid-converter/issues"
   }
