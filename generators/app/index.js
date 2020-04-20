@@ -1,49 +1,49 @@
-'use strict';
-const chalk = require('chalk');
-const glob = require('glob');
+"use strict";
+const chalk = require("chalk");
+const glob = require("glob");
 
-const packagejs = require('../../package.json');
-const semver = require('semver');
+const packagejs = require("../../package.json");
+const semver = require("semver");
 
-const jhipsterConstants = require('generator-jhipster/generators/generator-constants');
-const _ = require('lodash');
+const jhipsterConstants = require("generator-jhipster/generators/generator-constants");
+const _ = require("lodash");
 
-const fs = require('fs');
-const filePath = '.yo-rc.json';
+const fs = require("fs");
+const filePath = ".yo-rc.json";
 const generator_jh = "generator-jhipster";
 const otherModulesName = "otherModules";
 
-const BaseGenerator = require('../common');
+const BaseGenerator = require("../common");
 
 module.exports = class extends BaseGenerator {
     get initializing() {
         return {
-
             init(args) {
-                if (args === 'default') {
-
+                if (args === "default") {
                 }
                 this.registerPrettierTransform();
 
-                this.log(`${chalk.blue.bold('App!')} Init complete...\n`);
+                this.log(`${chalk.blue.bold("App!")} Init complete...\n`);
             },
 
             readConfig() {
                 this.jhAppConfig = this.getAllJhipsterConfig();
 
                 if (!this.jhAppConfig) {
-                    this.error('Can\'t read .yo-rc.json');
+                    this.error("Can't read .yo-rc.json");
                 }
 
-                this.log(`${chalk.blue.bold('App!')} Read Config complete...\n`);
+                this.log(
+                    `${chalk.blue.bold("App!")} Read Config complete...\n`
+                );
             },
 
             checkDBType() {
-                if (this.jhAppConfig.databaseType !== 'sql') {
+                if (this.jhAppConfig.databaseType !== "sql") {
                     // exit if DB type is not SQL
                     this.abort = true;
                 }
-                this.log(`${chalk.blue.bold('App!')} Check DB complete...\n`);
+                this.log(`${chalk.blue.bold("App!")} Check DB complete...\n`);
             },
 
             displayLogo() {
@@ -52,12 +52,19 @@ module.exports = class extends BaseGenerator {
 
             checkJHVersion() {
                 const jhipsterVersion = this.jhAppConfig.jhipsterVersion;
-                const minimumJhipsterVersion = packagejs.dependencies['generator-jhipster'];
-                if (!semver.satisfies(jhipsterVersion, minimumJhipsterVersion)) {
-                    this.warning(`\nYour generated project used an old JHipster version (${jhipsterVersion})... you need at least (${minimumJhipsterVersion})\n`);
+                const minimumJhipsterVersion =
+                    packagejs.dependencies["generator-jhipster"];
+                if (
+                    !semver.satisfies(jhipsterVersion, minimumJhipsterVersion)
+                ) {
+                    this.warning(
+                        `\nYour generated project used an old JHipster version (${jhipsterVersion})... you need at least (${minimumJhipsterVersion})\n`
+                    );
                 }
 
-                this.log(`${chalk.blue.bold('App!')} Check JH Version complete...\n`);
+                this.log(
+                    `${chalk.blue.bold("App!")} Check JH Version complete...\n`
+                );
             }
         };
     }
@@ -65,17 +72,15 @@ module.exports = class extends BaseGenerator {
     prompting() {
         const prompts = [];
         const done = this.async();
-        this.prompt(prompts)
-            .then((props) => {
-                this.props = props;
-                // To access props later use this.props.someOption;
+        this.prompt(prompts).then(props => {
+            this.props = props;
+            // To access props later use this.props.someOption;
 
-                done();
-            });
+            done();
+        });
     }
 
     get writing() {
-
         return {
             updateYeomanConfig() {
                 const pn = {
@@ -85,25 +90,42 @@ module.exports = class extends BaseGenerator {
 
                 // this.config.set('promptValues', pn);
 
-                const data = fs.existsSync(filePath) ? fs.readFileSync(filePath, { flag: 'r' }) : null;
-                if(data) {
+                const data = fs.existsSync(filePath)
+                    ? fs.readFileSync(filePath, { flag: "r" })
+                    : null;
+                if (data) {
                     const json = JSON.parse(data);
                     const jh = json[generator_jh];
-                    this.log(`${chalk.green.bold('App generator_jh: ')} ${JSON.stringify(jh)}\n`);
+                    this.log(
+                        `${chalk.blue.bold(
+                            "App generator_jh: "
+                        )} ${JSON.stringify(jh)}\n`
+                    );
                     const otherModules = jh[otherModulesName] || [];
                     const oldPn = otherModules.find(e => e.name === pn.name);
-                    if(oldPn) {
+                    if (oldPn) {
                         oldPn.version = pn.version;
                     } else {
                         otherModules.push(pn);
                     }
 
-                    this.log(`${chalk.green.bold('otherModules: ')} ${JSON.stringify(otherModules)}\n`);
+                    this.log(
+                        `${chalk.blue.bold("otherModules: ")} ${JSON.stringify(
+                            otherModules
+                        )}\n`
+                    );
                     json[generator_jh][otherModulesName] = otherModules;
                     fs.unlinkSync(filePath);
-                    fs.writeFileSync(filePath, JSON.stringify(json, null, 2), { encoding: 'utf8', flag: 'w+' });
+                    fs.writeFileSync(filePath, JSON.stringify(json, null, 2), {
+                        encoding: "utf8",
+                        flag: "w+"
+                    });
                 }
-                this.log(`${chalk.green.bold('App!')} Update Yeoman Config complete...\n`);
+                this.log(
+                    `${chalk.blue.bold(
+                        "App!"
+                    )} Update Yeoman Config complete...\n`
+                );
             },
 
             setupGlobalVar() {
@@ -135,16 +157,20 @@ module.exports = class extends BaseGenerator {
 
                 // use constants from generator-constants.js
                 this.webappDir = jhipsterConstants.CLIENT_MAIN_SRC_DIR;
-                this.javaTemplateDir = 'src/main/java/package';
-                this.javaDir = `${jhipsterConstants.SERVER_MAIN_SRC_DIR + this.packageFolder}/`;
+                this.javaTemplateDir = "src/main/java/package";
+                this.javaDir = `${jhipsterConstants.SERVER_MAIN_SRC_DIR +
+                    this.packageFolder}/`;
                 this.resourceDir = jhipsterConstants.SERVER_MAIN_RES_DIR;
                 this.interpolateRegex = jhipsterConstants.INTERPOLATE_REGEX;
-                this.javaTestDir = `${jhipsterConstants.SERVER_TEST_SRC_DIR + this.packageFolder}/`;
+                this.javaTestDir = `${jhipsterConstants.SERVER_TEST_SRC_DIR +
+                    this.packageFolder}/`;
 
                 // variable from questions
                 this.message = this.props.message;
 
-                this.log(`${chalk.green.bold('App!')} Setup Global Var complete...\n`);
+                this.log(
+                    `${chalk.blue.bold("App!")} Setup Global Var complete...\n`
+                );
             },
 
             writeBaseFiles() {
@@ -154,89 +180,212 @@ module.exports = class extends BaseGenerator {
                 const resourceDir = this.resourceDir;
 
                 // show all variables
-                this.log('\n--- some config read from config ---');
+                this.log("\n--- some config read from config ---");
                 this.log(`baseName=${this.baseName}`);
                 this.log(`packageName=${this.packageName}`);
                 this.log(`clientFramework=${this.clientFramework}`);
                 this.log(`clientPackageManager=${this.clientPackageManager}`);
                 this.log(`buildTool=${this.buildTool}`);
 
-                this.log('\n--- some function ---');
+                this.log("\n--- some function ---");
                 this.log(`angularAppName=${this.angularAppName}`);
 
-                this.log('\n--- some const ---');
+                this.log("\n--- some const ---");
                 this.log(`javaDir=${javaDir}`);
                 this.log(`resourceDir=${resourceDir}`);
                 this.log(`webappDir=${webappDir}`);
 
-                this.log('\n--- variables from questions ---');
+                this.log("\n--- variables from questions ---");
                 this.log(`\nmessage=${this.message}`);
-                this.log('------\n');
+                this.log("------\n");
 
                 // Convert Code here
-                this.convertIDtoUUIDForColumn(`${javaDir}domain/User.java`, '', 'id');
-                this.convertIDtoUUIDForColumn(`${javaDir}domain/PersistentAuditEvent.java`, '', 'event_id');
+                this.convertIDtoUUIDForColumn(
+                    `${javaDir}domain/User.java`,
+                    "",
+                    "id"
+                );
+                this.convertIDtoUUIDForColumn(
+                    `${javaDir}domain/PersistentAuditEvent.java`,
+                    "",
+                    "event_id"
+                );
 
                 // And the Repository
                 this.longToUUID(`${javaDir}repository/UserRepository.java`);
-                this.longToUUID(`${javaDir}repository/PersistenceAuditEventRepository.java`);
+                this.longToUUID(
+                    `${javaDir}repository/PersistenceAuditEventRepository.java`
+                );
 
                 // And the Service
                 this.longToUUID(`${javaDir}service/AuditEventService.java`);
-                this.replaceContent(`${javaDir}service/UserService.java`, 'getUserWithAuthorities(Long id)', 'getUserWithAuthorities(UUID id)');
+                this.replaceContent(
+                    `${javaDir}service/UserService.java`,
+                    "getUserWithAuthorities(Long id)",
+                    "getUserWithAuthorities(UUID id)"
+                );
                 this.importUUID(`${javaDir}service/mapper/UserMapper.java`);
-                this.replaceContent(`${javaDir}service/mapper/UserMapper.java`, 'userFromId(Long id)', 'userFromId(UUID id)');
+                this.replaceContent(
+                    `${javaDir}service/mapper/UserMapper.java`,
+                    "userFromId(Long id)",
+                    "userFromId(UUID id)"
+                );
                 this.longToUUID(`${javaDir}service/mapper/UserMapper.java`);
                 this.longToUUID(`${javaDir}service/UserService.java`);
 
                 // And the Web
                 this.importUUID(`${javaDir}web/rest/AuditResource.java`);
-                this.replaceContent(`${javaDir}web/rest/AuditResource.java`, 'get(@PathVariable Long id)', 'get(@PathVariable UUID id)');
+                this.replaceContent(
+                    `${javaDir}web/rest/AuditResource.java`,
+                    "get(@PathVariable Long id)",
+                    "get(@PathVariable UUID id)"
+                );
                 this.longToUUID(`${javaDir}web/rest/vm/ManagedUserVM.java`);
                 this.longToUUID(`${javaDir}service/dto/UserDTO.java`);
 
                 // Tests
-                this.replaceContent(`${javaTestDir}web/rest/UserResourceIT.java`, 'Long', 'UUID', 'true');
+                this.replaceContent(
+                    `${javaTestDir}web/rest/UserResourceIT.java`,
+                    "Long",
+                    "UUID",
+                    "true"
+                );
 
-                this.replaceContent(`${javaTestDir}web/rest/UserResourceIT.java`, '1L', 'UUID.fromString("00000000-0000-0000-0000-000000000001")', 'true');
-                this.replaceContent(`${javaTestDir}web/rest/UserResourceIT.java`, '2L', 'UUID.fromString("00000000-0000-0000-0000-000000000002")', 'true');
+                this.replaceContent(
+                    `${javaTestDir}web/rest/UserResourceIT.java`,
+                    "1L",
+                    'UUID.fromString("00000000-0000-0000-0000-000000000001")',
+                    "true"
+                );
+                this.replaceContent(
+                    `${javaTestDir}web/rest/UserResourceIT.java`,
+                    "2L",
+                    'UUID.fromString("00000000-0000-0000-0000-000000000002")',
+                    "true"
+                );
 
                 this.importUUID(`${javaTestDir}web/rest/AuditResourceIT.java`);
-                this.replaceContent(`${javaTestDir}web/rest/AuditResourceIT.java`, '1L', 'UUID.fromString("00000000-0000-0000-0000-000000000001")', 'true');
-                this.replaceContent(`${javaTestDir}web/rest/AuditResourceIT.java`, '2L', 'UUID.fromString("00000000-0000-0000-0000-000000000002")', 'true');
+                this.replaceContent(
+                    `${javaTestDir}web/rest/AuditResourceIT.java`,
+                    "1L",
+                    'UUID.fromString("00000000-0000-0000-0000-000000000001")',
+                    "true"
+                );
+                this.replaceContent(
+                    `${javaTestDir}web/rest/AuditResourceIT.java`,
+                    "2L",
+                    'UUID.fromString("00000000-0000-0000-0000-000000000002")',
+                    "true"
+                );
 
-                this.longToUUID(`${javaTestDir}service/mapper/UserMapperTest.java`);
-                this.replaceContent(`${javaTestDir}service/mapper/UserMapperTest.java`, '1L', 'UUID.fromString("00000000-0000-0000-0000-000000000001")', 'true');
+                this.longToUUID(
+                    `${javaTestDir}service/mapper/UserMapperTest.java`
+                );
+                this.replaceContent(
+                    `${javaTestDir}service/mapper/UserMapperTest.java`,
+                    "1L",
+                    'UUID.fromString("00000000-0000-0000-0000-000000000001")',
+                    "true"
+                );
 
-                const file = glob.sync('src/main/resources/config/liquibase/changelog/*initial_schema.xml')[0];
+                const file = glob.sync(
+                    "src/main/resources/config/liquibase/changelog/*initial_schema.xml"
+                )[0];
 
-                this.replaceContent(file, 'type="bigint"', 'type="varchar(50)"', 'true');
-                this.replaceContent(file, 'type="BIGINT"', 'type="varchar(50)"', 'true');
-                this.replaceContent(file, 'type="numeric"', 'type="string"', 'true');
-                this.replaceContent(file, 'autoIncrement="\\$\\{autoIncrement\\}"', '', 'true');
+                this.replaceContent(
+                    file,
+                    'type="bigint"',
+                    'type="varchar(50)"',
+                    "true"
+                );
+                this.replaceContent(
+                    file,
+                    'type="BIGINT"',
+                    'type="varchar(50)"',
+                    "true"
+                );
+                this.replaceContent(
+                    file,
+                    'type="numeric"',
+                    'type="string"',
+                    "true"
+                );
+                this.replaceContent(
+                    file,
+                    'autoIncrement="\\$\\{autoIncrement\\}"',
+                    "",
+                    "true"
+                );
 
-                this.replaceContent('src/main/resources/config/liquibase/data/user.csv', '1;', '8d9b707a-ddf4-11e5-b86d-9a79f06e9478;', 'true');
-                this.replaceContent('src/main/resources/config/liquibase/data/user.csv', '2;', '8d9b7412-ddf4-11e5-b86d-9a79f06e9478;', 'true');
-                this.replaceContent('src/main/resources/config/liquibase/data/user.csv', '3;', '8d9b77f0-ddf4-11e5-b86d-9a79f06e9478;', 'true');
-                this.replaceContent('src/main/resources/config/liquibase/data/user.csv', '4;', '8d9b79c6-ddf4-11e5-b86d-9a79f06e9478;', 'true');
+                this.replaceContent(
+                    "src/main/resources/config/liquibase/data/user.csv",
+                    "1;",
+                    "8d9b707a-ddf4-11e5-b86d-9a79f06e9478;",
+                    "true"
+                );
+                this.replaceContent(
+                    "src/main/resources/config/liquibase/data/user.csv",
+                    "2;",
+                    "8d9b7412-ddf4-11e5-b86d-9a79f06e9478;",
+                    "true"
+                );
+                this.replaceContent(
+                    "src/main/resources/config/liquibase/data/user.csv",
+                    "3;",
+                    "8d9b77f0-ddf4-11e5-b86d-9a79f06e9478;",
+                    "true"
+                );
+                this.replaceContent(
+                    "src/main/resources/config/liquibase/data/user.csv",
+                    "4;",
+                    "8d9b79c6-ddf4-11e5-b86d-9a79f06e9478;",
+                    "true"
+                );
 
-                this.replaceContent('src/main/resources/config/liquibase/data/user_authority.csv', '1;', '8d9b707a-ddf4-11e5-b86d-9a79f06e9478;', 'true');
-                this.replaceContent('src/main/resources/config/liquibase/data/user_authority.csv', '3;', '8d9b77f0-ddf4-11e5-b86d-9a79f06e9478;', 'true');
-                this.replaceContent('src/main/resources/config/liquibase/data/user_authority.csv', '4;', '8d9b79c6-ddf4-11e5-b86d-9a79f06e9478;', 'true');
+                this.replaceContent(
+                    "src/main/resources/config/liquibase/data/user_authority.csv",
+                    "1;",
+                    "8d9b707a-ddf4-11e5-b86d-9a79f06e9478;",
+                    "true"
+                );
+                this.replaceContent(
+                    "src/main/resources/config/liquibase/data/user_authority.csv",
+                    "3;",
+                    "8d9b77f0-ddf4-11e5-b86d-9a79f06e9478;",
+                    "true"
+                );
+                this.replaceContent(
+                    "src/main/resources/config/liquibase/data/user_authority.csv",
+                    "4;",
+                    "8d9b79c6-ddf4-11e5-b86d-9a79f06e9478;",
+                    "true"
+                );
 
-                this.log(`${chalk.green.bold('App!')} Update of core files complete...\n`);
+                this.log(
+                    `${chalk.blue.bold(
+                        "App!"
+                    )} Update of core files complete...\n`
+                );
             },
 
             updateFiles() {
-                this.log(`${chalk.green.bold('App!')} Update files complete...\n`);
+                this.log(
+                    `${chalk.blue.bold("App!")} Update files complete...\n`
+                );
             },
 
             writeFiles() {
-                this.log(`${chalk.green.bold('App!')} Write files complete...\n`);
+                this.log(
+                    `${chalk.blue.bold("App!")} Write files complete...\n`
+                );
             },
 
             updateEntityFiles() {
-                this.log(`${chalk.green.bold('App!')} Update Entity files complete...\n`);
+                this.log(
+                    `${chalk.blue.bold(
+                        "App!"
+                    )} Update Entity files complete...\n`
+                );
             },
 
             registering() {
@@ -247,46 +396,60 @@ module.exports = class extends BaseGenerator {
 
                 // Register post-app and post-entity hook
                 try {
-                    this.registerModule('generator-jhipster-mysql-uuid-converter', 'entity', 'post', 'entity', 'mysql Long to UUID converter');
-                    this.log(`${chalk.green.bold('App!')} Registering complete...\n`);
+                    this.registerModule(
+                        "generator-jhipster-mysql-uuid-converter",
+                        "entity",
+                        "post",
+                        "entity",
+                        "mysql Long to UUID converter"
+                    );
+                    this.log(
+                        `${chalk.blue.bold("App!")} Registering complete...\n`
+                    );
                 } catch (err) {
-                    this.log(`${chalk.red.bold('WARN!')} Could not register as a jhipster post app and entity creation hook......\n`);
+                    this.log(
+                        `${chalk.red.bold(
+                            "WARN!"
+                        )} Could not register as a jhipster post app and entity creation hook......\n`
+                    );
                 }
             }
         };
     }
 
     install() {
-        const logMsg =
-            `To install your dependencies manually, run: ${chalk.yellow.bold(`${this.clientPackageManager} install`)}`;
+        const logMsg = `To install your dependencies manually, run: ${chalk.yellow.bold(
+            `${this.clientPackageManager} install`
+        )}`;
 
-        const injectDependenciesAndConstants = (err) => {
+        const injectDependenciesAndConstants = err => {
             if (err) {
-                this.warning('Install of dependencies failed!');
+                this.warning("Install of dependencies failed!");
                 this.log(logMsg);
-            } else if (this.clientFramework === 'angularX') {
+            } else if (this.clientFramework === "angularX") {
                 // this.spawnCommand(this.clientPackageManager, ['webpack:build']);
             }
         };
 
         const installConfig = {
-            npm: this.clientPackageManager !== 'yarn',
-            yarn: this.clientPackageManager === 'yarn',
+            npm: this.clientPackageManager !== "yarn",
+            yarn: this.clientPackageManager === "yarn",
             bower: false,
             callback: injectDependenciesAndConstants
         };
 
-        if (this.options['skip-install']) {
+        if (this.options["skip-install"]) {
             this.log(logMsg);
         } else {
             // this.installDependencies(installConfig);
         }
 
-        this.log(`\n${chalk.bold.green('App Install complete...')}`);
+        this.log(`\n${chalk.bold.blue("App Install complete...")}`);
     }
 
     end() {
-        this.log(`\n${chalk.bold.green('End of mysql-uuid-converter generator')}`);
-        this.log(`\n${chalk.bold.green('I\'m running webpack now')}`);
+        this.log(
+            `\n${chalk.bold.blue("End of mysql-uuid-converter generator")}`
+        );
     }
 };
