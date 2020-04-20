@@ -43,7 +43,7 @@ module.exports = class extends BaseGenerator {
                         )} ${JSON.stringify(jh)}\n`
                     );
                     const otherModules = jh[otherModulesName] || [];
-                    const oldPn = otherModules.find(e => e.name === pn.name);
+                    const oldPn = otherModules.find((e) => e.name === pn.name);
                     if (oldPn) {
                         oldPn.version = pn.version;
                         this.abort = true;
@@ -75,7 +75,7 @@ module.exports = class extends BaseGenerator {
                 this.jhAppConfig = this.getAllJhipsterConfig();
 
                 if (!this.jhAppConfig) {
-                    this.error("Can't read .yo-rc.json");
+                    this.error('Can\'t read .yo-rc.json');
                 }
 
                 this.log(
@@ -103,8 +103,7 @@ module.exports = class extends BaseGenerator {
                     return;
                 }
                 const { jhipsterVersion } = this.jhAppConfig;
-                const minimumJhipsterVersion =
-                    packagejs.dependencies['generator-jhipster'];
+                const minimumJhipsterVersion = packagejs.dependencies['generator-jhipster'];
                 if (
                     !semver.satisfies(jhipsterVersion, minimumJhipsterVersion)
                 ) {
@@ -126,7 +125,7 @@ module.exports = class extends BaseGenerator {
         }
         const prompts = [];
         const done = this.async();
-        this.prompt(prompts).then(props => {
+        this.prompt(prompts).then((props) => {
             this.props = props;
             // To access props later use this.props.someOption;
 
@@ -176,12 +175,12 @@ module.exports = class extends BaseGenerator {
                 // use constants from generator-constants.js
                 this.webappDir = jhipsterConstants.CLIENT_MAIN_SRC_DIR;
                 this.javaTemplateDir = 'src/main/java/package';
-                this.javaDir = `${jhipsterConstants.SERVER_MAIN_SRC_DIR +
-                    this.packageFolder}/`;
+                this.javaDir = `${jhipsterConstants.SERVER_MAIN_SRC_DIR
+                    + this.packageFolder}/`;
                 this.resourceDir = jhipsterConstants.SERVER_MAIN_RES_DIR;
                 this.interpolateRegex = jhipsterConstants.INTERPOLATE_REGEX;
-                this.javaTestDir = `${jhipsterConstants.SERVER_TEST_SRC_DIR +
-                    this.packageFolder}/`;
+                this.javaTestDir = `${jhipsterConstants.SERVER_TEST_SRC_DIR
+                    + this.packageFolder}/`;
 
                 // variable from questions
                 this.message = this.props.message;

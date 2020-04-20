@@ -57,17 +57,6 @@
     "release:major": "npm version major -a -m \"Update to %s\" && npm run release",
     "test": "mocha test"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.{js,json,yml,md}": [
-      "prettier --write",
-      "git add"
-    ]
-  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/omishyn/generator-jhipster-mysql-uuid-converter/issues"
