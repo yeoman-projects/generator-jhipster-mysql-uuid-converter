@@ -88,7 +88,7 @@ module.exports = class extends BaseGenerator {
                         )} This sub generator should be used only from JHipster and cannot be run directly...\n`
                     )
                 }
-            },
+            }
         }
     }
 
@@ -111,8 +111,8 @@ module.exports = class extends BaseGenerator {
                 type: 'confirm',
                 name: canChangeEntity,
                 message: `Would you like to change the ${entityName} entity class?`,
-                default: true,
-            },
+                default: true
+            }
         ]
 
         this.prompt(prompts).then(answers => {
@@ -391,7 +391,7 @@ module.exports = class extends BaseGenerator {
                 this.log(
                     `${chalk.blue.bold('ENTITY!')} Update Config complete...\n`
                 )
-            },
+            }
         }
     }
 
