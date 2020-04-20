@@ -1,13 +1,13 @@
-"use strict";
 const chalk = require("chalk");
 // const yosay = require('yosay');
 const glob = require("glob");
-const packagejs = require("../../package.json");
-const BaseGenerator = require("../common");
 const jhipsterConstants = require("generator-jhipster/generators/generator-constants");
 const _s = require("underscore.string");
 const fs = require("fs");
 const semver = require("semver");
+const BaseGenerator = require("../common");
+const packagejs = require("../../package.json");
+
 const canChangeEntity = "canChangeEntity";
 
 module.exports = class extends BaseGenerator {
@@ -65,7 +65,7 @@ module.exports = class extends BaseGenerator {
             },
 
             checkJHVersion() {
-                const jhipsterVersion = this.jhAppConfig.jhipsterVersion;
+                const { jhipsterVersion } = this.jhAppConfig;
                 const minimumJhipsterVersion =
                     packagejs.dependencies["generator-jhipster"];
                 if (
@@ -383,8 +383,9 @@ module.exports = class extends BaseGenerator {
                     this.yourOptionKey
                 );
                 this.log(
-                    `${chalk.red.bold("yourOptionKey: ")}` +
-                        JSON.stringify(this.yourOptionKey)
+                    `${chalk.red.bold("yourOptionKey: ")}${JSON.stringify(
+                        this.yourOptionKey
+                    )}`
                 );
 
                 this.log(

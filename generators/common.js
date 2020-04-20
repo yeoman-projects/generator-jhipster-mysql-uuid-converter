@@ -1,5 +1,5 @@
-"use strict";
 const chalk = require("chalk");
+// eslint-disable-next-line import/no-extraneous-dependencies
 const { v4: uuidv4 } = require("uuid");
 const BaseGenerator = require("generator-jhipster/generators/generator-base");
 const fs = require("fs");
@@ -35,7 +35,7 @@ module.exports = class extends BaseGenerator {
         const content = forEntity ? contentForEntity : contentUUID;
         const arrCheck = importNeedle ? [importNeedle] : importAutoPlaces;
         for (let i = 0; i < arrCheck.length; i++) {
-            let importNeedle = arrCheck[i];
+            const importNeedle = arrCheck[i];
             if (
                 this.replaceContent(
                     file,

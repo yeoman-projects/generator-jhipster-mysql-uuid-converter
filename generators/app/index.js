@@ -1,16 +1,16 @@
-"use strict";
 const chalk = require("chalk");
 const glob = require("glob");
 
-const packagejs = require("../../package.json");
 const semver = require("semver");
 
 const jhipsterConstants = require("generator-jhipster/generators/generator-constants");
 const _ = require("lodash");
 
 const fs = require("fs");
+const packagejs = require("../../package.json");
+
 const filePath = ".yo-rc.json";
-const generator_jh = "generator-jhipster";
+const generatorJh = "generator-jhipster";
 const otherModulesName = "otherModules";
 const pn = {
     name: packagejs.name,
@@ -36,7 +36,7 @@ module.exports = class extends BaseGenerator {
 
                 if (data) {
                     const json = JSON.parse(data);
-                    const jh = json[generator_jh];
+                    const jh = json[generatorJh];
                     this.log(
                         `${chalk.blue.bold(
                             "App generator_jh: "
@@ -57,7 +57,7 @@ module.exports = class extends BaseGenerator {
                             otherModules
                         )}\n`
                     );
-                    json[generator_jh][otherModulesName] = otherModules;
+                    json[generatorJh][otherModulesName] = otherModules;
                     fs.unlinkSync(filePath);
                     fs.writeFileSync(filePath, JSON.stringify(json, null, 2), {
                         encoding: "utf8",
@@ -102,7 +102,7 @@ module.exports = class extends BaseGenerator {
                 if (this.abort) {
                     return;
                 }
-                const jhipsterVersion = this.jhAppConfig.jhipsterVersion;
+                const { jhipsterVersion } = this.jhAppConfig;
                 const minimumJhipsterVersion =
                     packagejs.dependencies["generator-jhipster"];
                 if (
@@ -136,12 +136,12 @@ module.exports = class extends BaseGenerator {
 
     get writing() {
         return {
-            updateYeomanConfig() {
-                if (this.abort) {
-                    return;
-                }
-                // this.config.set('promptValues', pn);
-            },
+            // updateYeomanConfig() {
+            //     if (this.abort) {
+            //
+            //     }
+            //     // this.config.set('promptValues', pn);
+            // },
 
             setupGlobalVar() {
                 if (this.abort) {
@@ -195,10 +195,10 @@ module.exports = class extends BaseGenerator {
                 if (this.abort) {
                     return;
                 }
-                const javaDir = this.javaDir;
-                const javaTestDir = this.javaTestDir;
-                const webappDir = this.webappDir;
-                const resourceDir = this.resourceDir;
+                const { javaDir } = this;
+                const { javaTestDir } = this;
+                const { webappDir } = this;
+                const { resourceDir } = this;
 
                 // show all variables
                 this.log("\n--- some config read from config ---");
@@ -450,21 +450,21 @@ module.exports = class extends BaseGenerator {
             `${this.clientPackageManager} install`
         )}`;
 
-        const injectDependenciesAndConstants = err => {
-            if (err) {
-                this.warning("Install of dependencies failed!");
-                this.log(logMsg);
-            } else if (this.clientFramework === "angularX") {
-                // this.spawnCommand(this.clientPackageManager, ['webpack:build']);
-            }
-        };
+        // const injectDependenciesAndConstants = (err) => {
+        //     if (err) {
+        //         this.warning('Install of dependencies failed!');
+        //         this.log(logMsg);
+        //     } else if (this.clientFramework === 'angularX') {
+        //         // this.spawnCommand(this.clientPackageManager, ['webpack:build']);
+        //     }
+        // };
 
-        const installConfig = {
-            npm: this.clientPackageManager !== "yarn",
-            yarn: this.clientPackageManager === "yarn",
-            bower: false,
-            callback: injectDependenciesAndConstants
-        };
+        // const installConfig = {
+        //     npm: this.clientPackageManager !== 'yarn',
+        //     yarn: this.clientPackageManager === 'yarn',
+        //     bower: false,
+        //     callback: injectDependenciesAndConstants
+        // };
 
         if (this.options["skip-install"]) {
             this.log(logMsg);
