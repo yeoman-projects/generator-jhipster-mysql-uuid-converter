@@ -220,7 +220,6 @@ module.exports = class extends BaseGenerator {
 
                 // Register post-app and post-entity hook
                 try {
-                    // this.registerModule('generator-jhipster-mysql-uuid-converter', 'app', 'post', 'app', 'mysql Long to UUID converter');
                     this.registerModule('generator-jhipster-mysql-uuid-converter', 'entity', 'post', 'entity', 'mysql Long to UUID converter');
                     this.log(`${chalk.green.bold('App!')} Registering complete...\n`);
                 } catch (err) {

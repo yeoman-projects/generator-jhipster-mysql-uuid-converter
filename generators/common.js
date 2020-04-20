@@ -77,13 +77,13 @@ module.exports = class extends BaseGenerator {
 
     printConverterLogo() {
         this.log('\n');
-        this.log(`${chalk.blue('  ███╗   ███╗██╗   ██╗ █████╗ █████╗ ║██     ║██   ██╗║██   ██╗██████╗██████╗ ')}`);
-        this.log(`${chalk.blue('  ████╗ ████║ ██╗ ██╔╝██╔═══╝██   ██║║██     ║██   ██║║██   ██║╚═██╔═╝██   ██╗')}`);
-        this.log(`${chalk.blue('  ██╔████╔██║  ████╔╝ ╚████╗ ██   ██║║██     ║██   ██║║██   ██║  ██║  ██   ██║')}`);
-        this.log(`${chalk.blue('  ██║╚██╔╝██║  ╚██╔╝   ╚══██╗██   ██║║██     ║██   ██║║██   ██║  ██║  ██   ██║')}`);
-        this.log(`${chalk.blue('  ██║ ╚═╝ ██║   ██║   █████╔╝║████ ╔╝ ╚████║  ╚█████╔╝ ╚█████╔╝██████╗█████╔═╝')}`);
-        this.log(`${chalk.blue('  ╚═╝     ╚═╝   ╚═╝   ╚════╝ ╚════██   ╚═══╝   ╚════╝   ╚════╝ ╚═════╝╚════╝  ')}\n`);
-        this.log(`\nWelcome to the ${chalk.bold.yellow('JHipster mysql-uuid')} converter! ${chalk.yellow(`v${packagejs.version}\n`)}`);
+        this.log(`${chalk.blue('  ███╗   ███╗██╗   ██╗ █████╗ █████╗ ║██    ')}` + `${chalk.yellow('║██   ██╗║██   ██╗██████╗██████╗ ')}`);
+        this.log(`${chalk.blue('  ████╗ ████║ ██╗ ██╔╝██╔═══╝██   ██║║██    ')}` + `${chalk.yellow('║██   ██║║██   ██║╚═██╔═╝██   ██╗')}`);
+        this.log(`${chalk.blue('  ██╔████╔██║  ████╔╝ ╚████╗ ██   ██║║██    ')}` + `${chalk.yellow('║██   ██║║██   ██║  ██║  ██   ██║')}`);
+        this.log(`${chalk.blue('  ██║╚██╔╝██║  ╚██╔╝   ╚══██╗██   ██║║██    ')}` + `${chalk.yellow('║██   ██║║██   ██║  ██║  ██   ██║')}`);
+        this.log(`${chalk.blue('  ██║ ╚═╝ ██║   ██║   █████╔╝║████ ╔╝ ╚████║')}` + `${chalk.yellow(' ╚█████╔╝ ╚█████╔╝██████╗█████╔═╝')}`);
+        this.log(`${chalk.blue('  ╚═╝     ╚═╝   ╚═╝   ╚════╝ ╚════██   ╚═══╝')}` + `${chalk.yellow('  ╚════╝   ╚════╝ ╚═════╝╚════╝  ')}`);
+        this.log(`\n\nWelcome to the ${chalk.bold.yellow('JHipster mysql-uuid')} converter! ${chalk.yellow(`v${packagejs.version}\n`)}`);
     }
 };
 

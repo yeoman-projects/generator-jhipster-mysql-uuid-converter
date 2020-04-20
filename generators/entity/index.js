@@ -8,109 +8,97 @@ const jhipsterConstants = require('generator-jhipster/generators/generator-const
 const _s = require('underscore.string');
 const fs = require('fs');
 const semver = require('semver');
+const canChangeEntity = 'canChangeEntity';
 
 module.exports = class extends BaseGenerator {
     get initializing() {
         return {
             init(args) {
-                this.log(JSON.stringify(args));
-                this.log(`${chalk.green.bold('Entity!')} Init complete...\n`);
                 this.abort = false;
+                this.log();
+                this.log(`${chalk.blue.bold('args = ')} ${JSON.stringify(args)}\n`);
+                this.log(`${chalk.blue.bold('Entity!')} Init complete...\n`);
             },
 
             readConfig() {
-                this.log(`${chalk.green.bold('Entity!')} Read Config started...\n`);
+                this.log(`${chalk.blue.bold('Entity!')} Config start...\n`);
 
-                // this.entityConfig = this.options.entityConfig;
+                this.entityConfig = this.options.entityConfig;
 
-                // this.log(`${chalk.green.bold('options:')} ${JSON.stringify(this.options)}\n`);
+                // this.log(`${chalk.blue.bold('options:')} ${JSON.stringify(this.options)}\n`);
 
                 this.jhAppConfig = this.getAllJhipsterConfig();
 
-                this.log(`${chalk.green.bold('options:')} ${JSON.stringify(this.jhAppConfig)}\n`);
-                try{
-                    this.log(`${chalk.green.bold('options:')} ${JSON.stringify(this.options)}\n`);
-                }catch(e){
-
-                }
-
+                this.log(`${chalk.blue.bold('jhAppConfig:')} ${JSON.stringify(this.jhAppConfig)}\n`);
 
                 if (!this.jhAppConfig) {
                     this.error('Can\'t read .yo-rc.json');
                 }
-                this.log(`${chalk.green.bold('Entity!')} Read Config complete...\n`);
+
+                this.log(`${chalk.blue.bold('Entity!')} Config complete...\n`);
             },
 
             checkDBType() {
                 if (this.jhAppConfig.databaseType !== 'sql') {
                     // exit if DB type is not SQL
-                    // this.abort = true;
+                    this.abort = true;
+                    this.env.error(`${chalk.red.bold('ERROR!')}  I support only Sql database...`);
+                } else {
+                    this.log(`${chalk.blue.bold('Entity!')} Check DB complete...\n`);
                 }
-                this.log(`${chalk.green.bold('Entity!')} Check DB complete...\n`);
             },
 
             displayLogo() {
-                if (this.abort) {
-                    return;
-                }
                 this.printConverterLogo();
             },
 
             checkJHVersion() {
-                // const jhipsterVersion = this.jhAppConfig.jhipsterVersion;
-                // const minimumJhipsterVersion = packagejs.dependencies['generator-jhipster'];
-                // if (!semver.satisfies(jhipsterVersion, minimumJhipsterVersion)) {
-                //     this.env.error(`${chalk.red.bold('ERROR!')}  I support only JHipster versions greater than ${minimumJhipsterVersion}...
-                //     If you want to use Entity Audit with an older JHipster version, download a previous version that supports the required JHipster version.`);
-                // }
+                const jhipsterVersion = this.jhAppConfig.jhipsterVersion;
+                const minimumJhipsterVersion = packagejs.dependencies['generator-jhipster'];
+                if (!semver.satisfies(jhipsterVersion, minimumJhipsterVersion)) {
+                    this.env.error(`${chalk.red.bold('ERROR!')}  I support only JHipster versions greater than ${minimumJhipsterVersion}...
+                    If you want to use Entity Audit with an older JHipster version, download a previous version that supports the required JHipster version.`);
+                }
             },
 
             validate() {
                 // this shouldn't be run directly
-                // this.log(JSON.stringify(this.entityConfig));
-                // if (!this.entityConfig) {
-                    // this.abort = true;
-                    // this.env.error(`${chalk.red.bold('ERROR!')} This sub generator should be used only from JHipster and cannot be run directly...\n`);
-                // }
+                if (!this.entityConfig) {
+                    this.abort = true;
+                    this.env.error(`${chalk.red.bold('ERROR!')} This sub generator should be used only from JHipster and cannot be run directly...\n`);
+                }
             }
         };
     }
 
     prompting() {
-        this.log('prompting');
-
-        if (this.abort) {
+        // don't prompt if data are imported from a file
+        if (
+            this.entityConfig.useConfigurationFile === true &&
+            this.entityConfig.data &&
+            typeof this.entityConfig.data.yourOptionKey !== 'undefined'
+        ) {
+            this.yourOptionKey = this.entityConfig.data.yourOptionKey;
             return;
         }
 
-        // don't prompt if data are imported from a file
-        // if (this.entityConfig.useConfigurationFile === true && this.entityConfig.data && typeof this.entityConfig.data.yourOptionKey !== 'undefined') {
-        //     this.yourOptionKey = this.entityConfig.data.yourOptionKey;
-        //     this.info('Can\'t entityConfig', this.entityConfig);
-        //     return;
-        // }
+        const entityName = this.entityConfig.entityClass;
+
         const done = this.async();
-
-        const entityName = 'XXX'; //this.entityConfig.entityClass;
-
-        // Have Yeoman greet the user.
-        this.log(
-            yosay(`Welcome to the solid ${chalk.red('mysql-uuid')} converter!`)
-        );
-
         const prompts = [
             {
                 type: 'confirm',
-                name: 'canChangeEntity',
-                message: `Would you like to enable this option for '${entityName}'?`,
+                name: canChangeEntity,
+                message: `Would you like to change the ${entityName} entity class?`,
                 default: true
             }
         ];
 
-        return this.prompt(prompts).then(props => {
-            // To access props later use this.props.canChangeEntity;
-            this.props = props;
-
+        this.prompt(prompts).then(answers => {
+            this.promptAnswers = answers;
+            // this.log(`${chalk.red.bold('answers: ')}` + JSON.stringify(answers));
+            this.abort = !this.promptAnswers[canChangeEntity];
+            // To access props answers use this.promptAnswers.someOption;
             done();
         });
     }
@@ -139,19 +127,16 @@ module.exports = class extends BaseGenerator {
                 // const resourceDir = jhipsterConstants.SERVER_MAIN_RES_DIR;
                 // const webappDir = jhipsterConstants.CLIENT_MAIN_SRC_DIR;
 
-                const entityName = 'Application';//this.entityConfig.entityClass;
+                const entityName = this.entityConfig.entityClass;
 
                 // do your stuff here
                 // check if repositories are already annotated
-                const uuidGeneratorAnnotation = '@GeneratedValue.*';
+                const uuidGeneratorAnnotation = '@GeneratedValue.*"UUIDGenerator"';
                 const pattern = new RegExp(uuidGeneratorAnnotation, 'g');
 
                 const content = this.fs.read(`${javaDir}domain/${entityName}.java`, 'utf8');
 
-                if ( true
-                    //!pattern.test(content)
-                ) {
-                    // We need to convert this entity
+                if (!pattern.test(content)) { // We need to convert this entity
 
                     // JAVA
                     this.convertIDtoUUIDForColumn(`${javaDir}domain/${entityName}.java`, '', 'id');
@@ -185,7 +170,7 @@ module.exports = class extends BaseGenerator {
                     }
 
                     // Resource
-                    this.longToUUID(`${javaDir}web.rest/${entityName}Resource.java`);
+                    this.longToUUID(`${javaDir}web/rest/${entityName}Resource.java`);
 
                     // JavaScript
                     const entityNameSpinalCased = _s.dasherize(_s.decapitalize(entityName));
@@ -209,39 +194,38 @@ module.exports = class extends BaseGenerator {
                     this.replaceContent(`${javaTestDir}/web/rest/${entityName}ResourceIT.java`, 'getId\\(\\)\\.intValue\\(\\)', 'getId().toString()', 'true');
                     this.replaceContent(`${javaTestDir}/web/rest/${entityName}ResourceIT.java`, '\\.intValue\\(\\)', '.toString()', 'true');
                     this.replaceContent(`${javaTestDir}/web/rest/${entityName}ResourceIT.java`, 'MAX_VALUE', 'randomUUID()', 'true');
-                } else {
-                    this.warn(`${chalk.green.bold('ENTITY!')} Pattern test true for ${content}\n`);
                 }
 
-                this.log(`${chalk.green.bold('ENTITY!')} Update files complete...\n`);
+                this.log(`${chalk.blue.bold('ENTITY!')} Update files complete...\n`);
             },
 
             writeFiles() {
-                this.log(`${chalk.green.bold('ENTITY!')} Write files complete...\n`);
                 if (this.abort) {
                     return;
                 }
+                this.log(`${chalk.blue.bold('ENTITY!')} Write files complete...\n`);
             },
 
             updateConfig() {
                 if (this.abort) {
                     return;
                 }
-                // this.updateEntityConfig(this.entityConfig.filename, 'yourOptionKey', this.yourOptionKey);
+                this.updateEntityConfig(this.entityConfig.filename, 'yourOptionKey', this.yourOptionKey);
+                this.log(`${chalk.red.bold('yourOptionKey: ')}` + JSON.stringify(this.yourOptionKey));
 
-                this.log(`${chalk.green.bold('ENTITY!')} Update Config complete...\n`);
+                this.log(`${chalk.blue.bold('ENTITY!')} Update Config complete...\n`);
             }
         };
     }
 
     end() {
-        // if (this.abort) {
-        //     return;
-        // }
-        // if (this.yourOptionKey) {
-        //     this.log(`\n${chalk.bold.green('mysql-uuid-converter enabled')}`);
-        // }
+        if (this.abort) {
+            return;
+        }
+        if (this.yourOptionKey) {
+            this.log(`\n${chalk.bold.blue('mysql-uuid-converter enabled')}`);
+        }
 
-        this.log(`${chalk.green.bold('ENTITY!')} End...\n`);
+        this.log(`${chalk.blue.bold('ENTITY!')} End...\n`);
     }
 };
