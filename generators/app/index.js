@@ -8,6 +8,11 @@ const semver = require('semver');
 const jhipsterConstants = require('generator-jhipster/generators/generator-constants');
 const _ = require('lodash');
 
+const fs = require('fs');
+const filePath = '.yo-rc.json';
+const generator_jh = "generator-jhipster";
+const otherModulesName = "otherModules";
+
 const BaseGenerator = require('../common');
 
 module.exports = class extends BaseGenerator {
@@ -73,9 +78,31 @@ module.exports = class extends BaseGenerator {
 
         return {
             updateYeomanConfig() {
-                // this.config.set('auditFramework', this.auditFramework);
-                //                 // this.config.set('auditPage', this.auditPage);
+                const pn = {
+                    name: packagejs.name,
+                    version: packagejs.version
+                };
 
+                // this.config.set('promptValues', pn);
+
+                const data = fs.existsSync(filePath) ? fs.readFileSync(filePath, { flag: 'r' }) : null;
+                if(data) {
+                    const json = JSON.parse(data);
+                    const jh = json[generator_jh];
+                    this.log(`${chalk.green.bold('App generator_jh: ')} ${JSON.stringify(jh)}\n`);
+                    const otherModules = jh[otherModulesName] || [];
+                    const oldPn = otherModules.find(e => e.name === pn.name);
+                    if(!oldPn) {
+                        oldPn.version = pn.version;
+                    } else {
+                        otherModules.push(pn);
+                    }
+
+                    this.log(`${chalk.green.bold('otherModules: ')} ${JSON.stringify(otherModules)}\n`);
+                    json[generator_jh][otherModulesName] = otherModules;
+                    fs.unlinkSync(filePath);
+                    fs.writeFileSync(filePath, JSON.stringify(json, null, 2), { encoding: 'utf8', flag: 'w+' });
+                }
                 this.log(`${chalk.green.bold('App!')} Update Yeoman Config complete...\n`);
             },
 
@@ -238,7 +265,7 @@ module.exports = class extends BaseGenerator {
                 this.warning('Install of dependencies failed!');
                 this.log(logMsg);
             } else if (this.clientFramework === 'angularX') {
-                this.spawnCommand(this.clientPackageManager, ['webpack:build']);
+                // this.spawnCommand(this.clientPackageManager, ['webpack:build']);
             }
         };
 
@@ -252,7 +279,7 @@ module.exports = class extends BaseGenerator {
         if (this.options['skip-install']) {
             this.log(logMsg);
         } else {
-            this.installDependencies(installConfig);
+            // this.installDependencies(installConfig);
         }
 
         this.log(`\n${chalk.bold.green('App Install complete...')}`);
