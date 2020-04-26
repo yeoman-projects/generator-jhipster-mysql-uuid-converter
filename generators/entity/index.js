@@ -202,20 +202,20 @@ module.exports = class extends BaseGenerator {
                     this.replaceContent(
                         `${javaTestDir}/web/rest/${entityName}ResourceIT.java`,
                         '(42L|42)',
-                        'UUID.fromString("00000000-0000-0000-0000-000000000042")',
+                        this.uuidString(42),
                         'true'
                     );
                     this.longToUUID(`${javaTestDir}/web/rest/${entityName}ResourceIT.java`);
                     this.replaceContent(
                         `${javaTestDir}/web/rest/${entityName}ResourceIT.java`,
                         '1L',
-                        'UUID.fromString("00000000-0000-0000-0000-000000000001")',
+                        this.uuidString(1),
                         'true'
                     );
                     this.replaceContent(
                         `${javaTestDir}/web/rest/${entityName}ResourceIT.java`,
                         '2L',
-                        'UUID.fromString("00000000-0000-0000-0000-000000000002")',
+                        this.uuidString(2),
                         'true'
                     );
                     this.replaceContent(
@@ -237,32 +237,42 @@ module.exports = class extends BaseGenerator {
                     this.replaceContent(
                         `${javaTestDir}domain/${entityName}Test.java`,
                         '1L',
-                        'UUID.fromString("00000000-0000-0000-0000-000000000001")',
+                        this.uuidString(1),
                         'true'
                     );
                     this.replaceContent(
                         `${javaTestDir}domain/${entityName}Test.java`,
                         '2L',
-                        'UUID.fromString("00000000-0000-0000-0000-000000000002")',
+                        this.uuidString(2),
                         'true'
                     );
 
-                    const delimiter = 'XXXXXXXXXX';
-                    for (let i = 1; i <= 10; i++) {
+                    for (let i = 10; i >= 1; i--) {
                         this.replaceContent(
                             `src/main/resources/config/liquibase/fake-data/${entityName.toLowerCase()}.csv`,
-                            `${i};`,
-                            `${this.uuid()}${delimiter}`,
+                            `\n${i};`,
+                            `\n${this.uuidS(i)};`,
                             'true'
                         );
                     }
 
-                    this.replaceContent(
-                        `src/main/resources/config/liquibase/fake-data/${entityName.toLowerCase()}.csv`,
-                        `${delimiter}`,
-                        ';',
-                        'true'
-                    );
+                    for (let i = 10; i >= 1; i--) {
+                        this.replaceContent(
+                            `src/main/resources/config/liquibase/fake-data/${entityName.toLowerCase()}.csv`,
+                            `;${i}\n`,
+                            `;${this.uuidS(i)}\n`,
+                            'true'
+                        );
+                    }
+
+                    for (let i = 10; i >= 1; i--) {
+                        this.replaceContent(
+                            `src/main/resources/config/liquibase/fake-data/${entityName.toLowerCase()}.csv`,
+                            `;${i};`,
+                            `;${this.uuidS(i)};`,
+                            'true'
+                        );
+                    }
                 }
 
                 this.log(`${chalk.blue.bold('ENTITY!')} Update files complete...\n`);

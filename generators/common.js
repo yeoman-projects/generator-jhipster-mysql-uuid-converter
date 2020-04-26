@@ -120,4 +120,13 @@ module.exports = class extends BaseGenerator {
     uuid() {
         return uuidv4();
     }
+
+    uuidString(i) {
+        return `UUID.fromString("${this.uuidS(i)}")`;
+    }
+
+    uuidS(i) {
+        const last = `${i}`;
+        return `00000000-0000-0000-0000-${last.padStart(12, '0')}`;
+    }
 };
