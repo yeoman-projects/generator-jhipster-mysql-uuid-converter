@@ -249,7 +249,7 @@ module.exports = class extends BaseGenerator {
 
                     for (let i = 10; i >= 1; i--) {
                         this.replaceContent(
-                            `src/main/resources/config/liquibase/fake-data/${entityName.toLowerCase()}.csv`,
+                            `src/main/resources/config/liquibase/fake-data/${this.toSnakeCase(entityName)}.csv`,
                             `\n${i};`,
                             `\n${this.uuidS(i)};`,
                             'true'
@@ -258,7 +258,7 @@ module.exports = class extends BaseGenerator {
 
                     for (let i = 10; i >= 1; i--) {
                         this.replaceContent(
-                            `src/main/resources/config/liquibase/fake-data/${entityName.toLowerCase()}.csv`,
+                            `src/main/resources/config/liquibase/fake-data/${this.toSnakeCase(entityName)}.csv`,
                             `;${i}\n`,
                             `;${this.uuidS(i)}\n`,
                             'true'
@@ -267,7 +267,7 @@ module.exports = class extends BaseGenerator {
 
                     for (let i = 10; i >= 1; i--) {
                         this.replaceContent(
-                            `src/main/resources/config/liquibase/fake-data/${entityName.toLowerCase()}.csv`,
+                            `src/main/resources/config/liquibase/fake-data/${this.toSnakeCase(entityName)}.csv`,
                             `;${i};`,
                             `;${this.uuidS(i)};`,
                             'true'

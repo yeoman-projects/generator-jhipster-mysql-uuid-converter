@@ -129,4 +129,11 @@ module.exports = class extends BaseGenerator {
         const last = `${i}`;
         return `00000000-0000-0000-0000-${last.padStart(12, '0')}`;
     }
+
+    toSnakeCase(str) {
+        return str && str
+            .match(/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g)
+            .map((x) => x.toLowerCase())
+            .join('_');
+    }
 };
