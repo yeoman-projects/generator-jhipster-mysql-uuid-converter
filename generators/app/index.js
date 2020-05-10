@@ -315,13 +315,13 @@ module.exports = class extends BaseGenerator {
                 this.replaceContent(
                     file,
                     'type="bigint"',
-                    'type="varchar(50)"',
+                    'type="varchar(255)"',
                     'true'
                 );
                 this.replaceContent(
                     file,
                     'type="BIGINT"',
-                    'type="varchar(50)"',
+                    'type="varchar(255)"',
                     'true'
                 );
                 this.replaceContent(

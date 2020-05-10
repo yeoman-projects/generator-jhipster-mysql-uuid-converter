@@ -192,8 +192,8 @@ module.exports = class extends BaseGenerator {
                     // Liquidbase
                     const file = glob.sync(`src/main/resources/config/liquibase/changelog/*entity_${entityName}.xml`)[0];
 
-                    this.replaceContent(file, 'type="bigint"', 'type="varchar(50)"', 'true');
-                    this.replaceContent(file, 'type="BIGINT"', 'type="varchar(50)"', 'true');
+                    this.replaceContent(file, 'type="bigint"', 'type="varchar(255)"', 'true');
+                    this.replaceContent(file, 'type="BIGINT"', 'type="varchar(255)"', 'true');
                     this.replaceContent(file, 'type="numeric"', 'type="string"', 'true');
                     this.replaceContent(file, 'autoIncrement="\\$\\{autoIncrement\\}"', '', 'true');
 
