@@ -28,7 +28,7 @@ import java.util.UUID;`;
 
 const genContent = `@GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @Type(type="uuid-char")`;
+    @Type(type="string")`;
 
 module.exports = class extends BaseGenerator {
     importUUID(file, importNeedle = '', forEntity = false) {
