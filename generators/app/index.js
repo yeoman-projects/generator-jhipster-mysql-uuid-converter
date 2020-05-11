@@ -274,13 +274,13 @@ module.exports = class extends BaseGenerator {
                 this.replaceContent(
                     `${javaTestDir}web/rest/UserResourceIT.java`,
                     '1L',
-                    'UUID.fromString("00000000-0000-0000-0000-000000000001")',
+                    '"00000000-0000-0000-0000-000000000001"',
                     'true'
                 );
                 this.replaceContent(
                     `${javaTestDir}web/rest/UserResourceIT.java`,
                     '2L',
-                    'UUID.fromString("00000000-0000-0000-0000-000000000002")',
+                    '"00000000-0000-0000-0000-000000000002"',
                     'true'
                 );
 
@@ -288,13 +288,13 @@ module.exports = class extends BaseGenerator {
                 this.replaceContent(
                     `${javaTestDir}web/rest/AuditResourceIT.java`,
                     '1L',
-                    'UUID.fromString("00000000-0000-0000-0000-000000000001")',
+                    '"00000000-0000-0000-0000-000000000001"',
                     'true'
                 );
                 this.replaceContent(
                     `${javaTestDir}web/rest/AuditResourceIT.java`,
                     '2L',
-                    'UUID.fromString("00000000-0000-0000-0000-000000000002")',
+                    '"00000000-0000-0000-0000-000000000002"',
                     'true'
                 );
 
@@ -304,7 +304,7 @@ module.exports = class extends BaseGenerator {
                 this.replaceContent(
                     `${javaTestDir}service/mapper/UserMapperTest.java`,
                     '1L',
-                    'UUID.fromString("00000000-0000-0000-0000-000000000001")',
+                    '"00000000-0000-0000-0000-000000000001"',
                     'true'
                 );
 
