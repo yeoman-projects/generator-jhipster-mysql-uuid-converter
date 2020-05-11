@@ -258,6 +258,12 @@ module.exports = class extends BaseGenerator {
                         this.uuidString(2),
                         'true'
                     );
+                    this.replaceContent(
+                        `${javaTestDir}service/mapper/${entityName}MapperTest.java`,
+                        'Long id = 1L;',
+                        `String id = ${this.uuidString(1)};`,
+                        'true'
+                    );
 
                     for (let i = 10; i >= 1; i--) {
                         this.replaceContent(
