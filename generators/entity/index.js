@@ -246,6 +246,18 @@ module.exports = class extends BaseGenerator {
                         this.uuidString(2),
                         'true'
                     );
+                    this.replaceContent(
+                        `${javaTestDir}service/dto/${entityName}DTOTest.java`,
+                        '1L',
+                        this.uuidString(1),
+                        'true'
+                    );
+                    this.replaceContent(
+                        `${javaTestDir}service/dto/${entityName}DTOTest.java`,
+                        '2L',
+                        this.uuidString(2),
+                        'true'
+                    );
 
                     for (let i = 10; i >= 1; i--) {
                         this.replaceContent(
