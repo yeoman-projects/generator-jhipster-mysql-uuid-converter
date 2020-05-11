@@ -242,13 +242,13 @@ module.exports = class extends BaseGenerator {
                 this.replaceContent(
                     `${javaDir}service/UserService.java`,
                     'getUserWithAuthorities(Long id)',
-                    'getUserWithAuthorities(UUID id)'
+                    'getUserWithAuthorities(String id)'
                 );
                 this.importUUID(`${javaDir}service/mapper/UserMapper.java`);
                 this.replaceContent(
                     `${javaDir}service/mapper/UserMapper.java`,
                     'userFromId(Long id)',
-                    'userFromId(UUID id)'
+                    'userFromId(String id)'
                 );
                 this.longToUUID(`${javaDir}service/mapper/UserMapper.java`);
                 this.longToUUID(`${javaDir}service/UserService.java`);
@@ -258,7 +258,7 @@ module.exports = class extends BaseGenerator {
                 this.replaceContent(
                     `${javaDir}web/rest/AuditResource.java`,
                     'get(@PathVariable Long id)',
-                    'get(@PathVariable UUID id)'
+                    'get(@PathVariable String id)'
                 );
                 this.longToUUID(`${javaDir}web/rest/vm/ManagedUserVM.java`);
                 this.longToUUID(`${javaDir}service/dto/UserDTO.java`);
@@ -267,7 +267,7 @@ module.exports = class extends BaseGenerator {
                 this.replaceContent(
                     `${javaTestDir}web/rest/UserResourceIT.java`,
                     'Long',
-                    'UUID',
+                    'String',
                     'true'
                 );
 

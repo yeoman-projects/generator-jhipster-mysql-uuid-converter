@@ -51,7 +51,7 @@ module.exports = class extends BaseGenerator {
 
     longToUUID(file, importNeedle = '', forEntity = false) {
         this.importUUID(file, importNeedle, forEntity);
-        this.replaceContent(file, 'Long', 'UUID', 'true');
+        this.replaceContent(file, 'Long', 'String', 'true');
     }
 
     convertIDtoUUIDForColumn(file, importNeedle = '', columnName = '') {
