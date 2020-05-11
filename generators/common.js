@@ -122,7 +122,7 @@ module.exports = class extends BaseGenerator {
     }
 
     uuidString(i) {
-        return `UUID.fromString("${this.uuidS(i)}")`;
+        return `"${this.uuidS(i)}"`;
     }
 
     uuidS(i) {
