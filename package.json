@@ -28,7 +28,7 @@
     "shelljs": "0.8.3",
     "yeoman-generator": "4.4.0",
     "glob": "7.1.6",
-    "lodash": "4.17.15",
+    "lodash": "4.17.21",
     "underscore.string": "^3.3.4"
   },
   "devDependencies": {
